@@ -1,0 +1,19 @@
+#login {
+  width: 450px;
+}
+.login-text {
+  color: #2563EB;
+}
+.login-input-container {
+  margin-bottom: 1.25rem;
+}
+.login-checkbox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+@media (max-width: 600px) {
+  #login {
+    max-width: 330px;
+  }
+}
