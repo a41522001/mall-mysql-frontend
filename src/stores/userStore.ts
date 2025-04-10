@@ -38,7 +38,7 @@ export const useUserStore = defineStore('userStore', () => {
   const logout = () => {
     sessionStorage.removeItem('token');
     isLogin.value = false;
-    router.push({ name: 'login' });
+    router.push({ path: '/login' });
   }
   return {
     isLogin,

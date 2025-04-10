@@ -1,5 +1,5 @@
 <template>
-  <img src="https://node-mysql-mall.s3.ap-northeast-1.amazonaws.com/Apple.png" alt="">
+
 </template>
 
 <script setup lang="ts">

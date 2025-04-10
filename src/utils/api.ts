@@ -23,8 +23,8 @@ export const api = async (url: string, method: string, data: any = null, header:
       url,
       method: method.toUpperCase(), 
       headers: {
-        'Content-Type': 'application/json',
-        ...header
+        ...header,
+        'Content-Type': header['Content-Type'] ?? 'application/json'
       },
       data
     });

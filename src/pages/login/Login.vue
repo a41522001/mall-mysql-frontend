@@ -65,7 +65,7 @@
     const { email, password } = loginInfo;
     const result = await userStore.login(email, password);
     if(result) {
-      router.push({ path: '/' })
+      router.push({ path: '/buyer' })
     }
   }
 </script>

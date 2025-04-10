@@ -5,9 +5,10 @@
  */
 
 // Composables
-import { createRouter, createWebHistory } from 'vue-router/auto'
+import { createRouter, createWebHistory } from 'vue-router'
 import { defineAsyncComponent } from 'vue';
 import { useUserStore } from '@/stores/userStore';
+import { components } from 'vuetify/dist/vuetify.js';
 const routes = [
   {
     path: '/',
@@ -18,6 +19,32 @@ const routes = [
     path: '/login',
     name: 'login',
     component: defineAsyncComponent(() => import('@/pages/login/Login.vue'))
+  },
+  {
+    path: '/sell',
+    name: 'sell',
+    children: [
+      {
+        path: '',
+        component: defineAsyncComponent(() => import('@/pages/sell/dashboard/Dashboard.vue'))
+      },
+      {
+        path: 'product',
+        name: 'sellProduct',
+        component: defineAsyncComponent(() => import('@/pages/sell/Product.vue'))
+      }
+    ]
+  },
+  {
+    path: '/buyer',
+    name: 'buyer',
+    component: defineAsyncComponent(() => import('@/layouts/BuyerLayout.vue')),
+    children: [
+      {
+        path: '',
+        component: defineAsyncComponent(() => import('@/pages/buyer/Product.vue'))
+      }
+    ]
   }
 ]
 const router = createRouter({

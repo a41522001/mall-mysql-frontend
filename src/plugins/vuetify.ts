@@ -5,9 +5,12 @@
  */
 
 // Styles
+import { VFileUpload } from 'vuetify/labs/VFileUpload'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import '@/styles/style.scss';
+
+
 // Composables
 import { createVuetify } from 'vuetify'
 const myCustomLightTheme = {
@@ -54,5 +57,8 @@ export default createVuetify({
     themes: {
       myCustomLightTheme,
     },
+  },
+  components: {
+    VFileUpload,
   },
 })
