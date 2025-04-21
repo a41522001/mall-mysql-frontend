@@ -33,7 +33,7 @@ const myCustomLightTheme = {
   },
   variables: {
     'border-color': '#000000',
-    // 'border-opacity': 0.12,
+    'border-opacity': 0.12,
     'high-emphasis-opacity': 0.87,
     'medium-emphasis-opacity': 0.60,
     'disabled-opacity': 0.38,
@@ -61,4 +61,14 @@ export default createVuetify({
   components: {
     VFileUpload,
   },
+  display: {
+    mobileBreakpoint: 'sm',
+    thresholds: {
+      xs: 0,
+      sm: 340,
+      md: 540,
+      lg: 800,
+      xl: 1280,
+    },
+  }
 })

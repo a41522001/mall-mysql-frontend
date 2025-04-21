@@ -11,7 +11,7 @@
           </div>
           <div class="login-input-container">
             <div class="mb-1">密碼</div>
-            <v-text-field v-model="loginInfo.password" class="login-input" :rounded="true" density="comfortable" 
+            <v-text-field v-model="loginInfo.password" @keyup.enter="handleLogin" class="login-input" :rounded="true" density="comfortable" 
               hide-details variant="outlined" placeholder="請輸入密碼" />
           </div>
           <div class="login-checkbox">

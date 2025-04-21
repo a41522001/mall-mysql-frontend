@@ -9,16 +9,18 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { defineAsyncComponent } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { components } from 'vuetify/dist/vuetify.js';
+import Login from '@/pages/login/Login.vue';
+import BuyerLayout from '@/layouts/BuyerLayout.vue';
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: defineAsyncComponent(() => import('@/pages/home/Home.vue'))
+    component: Login
   },
   {
     path: '/login',
     name: 'login',
-    component: defineAsyncComponent(() => import('@/pages/login/Login.vue'))
+    component: Login
   },
   {
     path: '/sell',
@@ -38,11 +40,22 @@ const routes = [
   {
     path: '/buyer',
     name: 'buyer',
-    component: defineAsyncComponent(() => import('@/layouts/BuyerLayout.vue')),
+    component: BuyerLayout,
     children: [
       {
         path: '',
+        name: 'product',
         component: defineAsyncComponent(() => import('@/pages/buyer/Product.vue'))
+      },
+      {
+        path: 'cart',
+        name: 'cart',
+        component: defineAsyncComponent(() => import('@/pages/buyer/Cart.vue'))
+      },
+      {
+        path: 'checkout',
+        name: 'checkout',
+        component: defineAsyncComponent(() => import('@/pages/buyer/Checkout.vue'))
       }
     ]
   }
@@ -56,6 +69,7 @@ router.beforeEach(async (to, from) => {
   if(!to.path.startsWith('/login')) {
     if(sessionStorage.getItem('token')) {
       await userStore.getUserInfo();
+      window.scrollTo(0, 0);
       return true;
     }else {
       return '/login'
