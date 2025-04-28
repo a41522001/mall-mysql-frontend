@@ -23,32 +23,74 @@
   </v-navigation-drawer>
   <v-main>
     <v-container>
-      <router-view />
+      <template v-if="isUserInfoReady">
+        <router-view />
+      </template>
     </v-container>
   </v-main>
+  <Loading />
 </template>
 
 <script lang="ts" setup>
-  import { reactive, shallowReactive, defineAsyncComponent, ref, onMounted, computed, nextTick } from 'vue';
+  import { reactive, shallowReactive, defineAsyncComponent, ref, onMounted, computed, nextTick, provide } from 'vue';
   import { useCartStore } from '@/stores/cartStore';
   import { useSysStore } from '@/stores/sysStore';
   import { useRouter } from 'vue-router';
+  import Loading from '@/components/common/Loading.vue';
+  import type { UserInfo } from '@/types/interface';
+  import { apiGetUserInfo } from '@/utils/apiClient';
   const router = useRouter();
   const cartStore = useCartStore();
   const sysStore = useSysStore();
   const drawer = ref<boolean>(false);
+  const isUserInfoReady = ref<boolean>(false);
+  const userInfo: UserInfo = reactive({
+    id: '',
+    name: '',
+    email: ''
+  });
+  provide('userInfo', readonly(userInfo));
   const dialog = reactive({
     cart: false
   })
   const openCartPage = () => {
-    const isCartListLength = cartStore.cartList.length;
+    const isCartListLength = cartStore.cartListLength;
     if(isCartListLength === 0) {
       sysStore.openDialog('購物車內無商品');
       return
     };
     router.push({ name: 'cart' });
   }
-  onMounted(() => {
-    cartStore.getCartList();
+  // 取得使用者資訊API
+  const getUserInfo = async () => {
+    try {
+      sysStore.setLoading(true);
+      const res = await apiGetUserInfo();
+      console.log(res);
+      Object.assign(userInfo, {...res});
+      isUserInfoReady.value = true;
+    } catch (error) {
+      sessionStorage.removeItem('token');
+      router.push('/login');
+      sysStore.openDialog('請重新登入');
+    } finally {
+      sysStore.setLoading(false);
+    }
+  }
+  // 設置購物車資訊API
+  const setCartList = async () => {
+    try {
+      sysStore.setLoading(true);
+      cartStore.setCartList(userInfo.id);
+    } catch (error) {
+      sysStore.openDialog(error as string);
+    } finally {
+      sysStore.setLoading(false);
+    }
+  }
+  
+  onMounted(async () => {
+    await getUserInfo();
+    await setCartList();
   })
 </script>

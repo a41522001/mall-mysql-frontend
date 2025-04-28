@@ -59,7 +59,6 @@
 
 <script setup lang="ts">
   import { reactive, watch, computed, ref } from 'vue';
-  import type { Cart } from '@/types/interface';
   import { useUserStore } from '@/stores/userStore';
   import { useCartStore } from '@/stores/cartStore';
   import { useSysStore } from '@/stores/sysStore';
@@ -178,17 +177,28 @@
       total: total.value,
       userId: userStore.userInfo.id
     }
-    const res = await Response.SendResponse('order/addOrder', 'post', data);
-    dialog.checkout = false;
-    console.log(123);
-    
-    if(res) {
-      await cartStore.getCartList();
-      init();
-      router.push({ name: 'checkout' });
+    try {
+      const res = await Response.SendResponse('order/addOrder', 'post', data);
+      console.log(res);
+      if(res) {
+        await cartStore.getCartList();
+        init();
+        router.push({ 
+          name: 'checkout', 
+          params: { 
+            orderId: res 
+          } 
+        });
+      }
+    } catch (error: any) {
+      console.log(error);
+      const errMessage = error.split('Error:')[1]
+      sysStore.openDialog(errMessage);
+    } finally {
+      dialog.checkout = false;
     }
-
   }
+
   const init = (): void => {
     for(const key in quantities) {
       delete quantities[key];

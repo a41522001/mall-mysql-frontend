@@ -10,7 +10,6 @@ import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -70,7 +69,9 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    allowedHosts: ['f6a9-36-229-145-242.ngrok-free.app']
   },
+  
   css: {
     preprocessorOptions: {
       sass: {

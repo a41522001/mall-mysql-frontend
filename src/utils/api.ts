@@ -31,8 +31,8 @@ export const api = async (url: string, method: string, data: any = null, header:
     return res;
   } catch (error) {
     console.error(error);
-    const err = error as AxiosError<any>;
-    throw err.response?.data?.message || err.message || '未知錯誤'
+    const err = error as AxiosError<string>;
+    throw err.message || '未知錯誤'
   }
 }
 

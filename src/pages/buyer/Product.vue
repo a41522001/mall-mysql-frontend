@@ -55,18 +55,19 @@
   </v-dialog>
 </template>
 <script setup lang="ts">
-  import { reactive, shallowReactive, defineAsyncComponent, ref, onMounted, computed, nextTick } from 'vue';
-  import { Response } from '@/utils/res';
-  import { useUserStore } from '@/stores/userStore';
+  import { reactive, shallowReactive, inject, ref, onMounted, computed, nextTick } from 'vue';
   import { useSysStore } from '@/stores/sysStore';
   import { useCartStore } from '@/stores/cartStore';
-  import type { Product } from '@/types/interface';
+  import type { Product, UserInfo } from '@/types/interface';
   import { useRouter } from 'vue-router';
   import Carousels from '@/components/common/Carousels.vue';
+  import { apiGetProduct, apiAddCart } from '@/utils/apiClient';
   const router = useRouter();
-  const userStore = useUserStore();
   const sysStore = useSysStore();
   const cartStore = useCartStore();
+  const userInfo = inject<UserInfo>('userInfo')!;
+  const { id: userId } = userInfo;
+
   const products: Product[] = shallowReactive([]);
   const currentProduct: Product = shallowReactive({
     id: '',
@@ -75,6 +76,7 @@
     quantity: 0,
     image: ''
   });
+
   const currentProductTotalPrice = computed((): number => currentProduct.price * quantity.value);
   const quantity = ref<number>(1);
   const dialog = reactive({
@@ -108,36 +110,36 @@
   // 新增購物車API
   const handleConfirmAddCart = async (): Promise<void> => {
     const { id } = currentProduct;
-    const data = {
+    const product = {
       productId: id,
       quantity: quantity.value,
-      userId: userStore.userInfo.id
+      userId: userId
     }
-    const res = await Response.SendResponse('cart/addCart', 'post', data);
-    if(!res) {
+    try {
+      sysStore.setLoading(true);
+      await apiAddCart(product);
       dialog.product = false;
       handleGetProduct();
       closeDialog();
-      cartStore.getCartList();
+      cartStore.setCartList(userId);
       sysStore.openDialog('成功添加購物車');
+    } catch (error) {
+      sysStore.openDialog(error as string);
+    } finally {
+      sysStore.setLoading(false);
     }
   }
 
   // 取得商品列表API
   const handleGetProduct = async (): Promise<void> => {
-    const res = await Response.SendResponse('product/getProduct', 'get');
-    products.splice(0, products.length, ...res as []);
-  }
-
-  // 結帳API
-  const handleCheck = async (data: any) => {
     try {
-      const res = await Response.SendResponse('order/addOrder', 'post', data);
-      sysStore.openDialog(res);
-      dialog.cart = false;
-      cartStore.getCartList();
+      sysStore.setLoading(true);
+      const res = await apiGetProduct();
+      products.splice(0, products.length, ...res);
     } catch (error) {
-      if(typeof error === 'string') sysStore.openDialog(error);
+      sysStore.openDialog(error as string);
+    } finally {
+      sysStore.setLoading(false);
     }
   }
 

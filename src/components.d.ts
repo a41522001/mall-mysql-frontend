@@ -11,6 +11,7 @@ declare module 'vue' {
     Carousels: typeof import('./components/common/Carousels.vue')['default']
     Cart: typeof import('./pages/buyer/Cart.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
+    Loading: typeof import('./components/common/Loading.vue')['default']
     Products: typeof import('./components/common/Products.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
