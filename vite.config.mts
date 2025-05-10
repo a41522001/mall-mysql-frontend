@@ -69,7 +69,7 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    allowedHosts: ['f6a9-36-229-145-242.ngrok-free.app']
+    allowedHosts: ['fb2c-36-229-167-237.ngrok-free.app']
   },
   
   css: {

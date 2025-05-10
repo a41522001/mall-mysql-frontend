@@ -9,8 +9,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { defineAsyncComponent } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { components } from 'vuetify/dist/vuetify.js';
-import Login from '@/pages/login/Login.vue';
+import Login from '@/pages/default/Login.vue';
 import BuyerLayout from '@/layouts/BuyerLayout.vue';
+import Signup from '@/pages/default/Signup.vue';
 const routes = [
   {
     path: '/',
@@ -21,6 +22,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: Signup
   },
   {
     path: '/sell',
@@ -67,7 +73,7 @@ const router = createRouter({
 })
 router.beforeEach(async (to, from) => {
   const userStore = useUserStore();
-  if(!to.path.startsWith('/login')) {
+  if(!to.path.startsWith('/login') && !to.path.startsWith('/signup')) {
     if(sessionStorage.getItem('token')) {
       await userStore.getUserInfo();
       window.scrollTo(0, 0);

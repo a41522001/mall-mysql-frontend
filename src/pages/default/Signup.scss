@@ -1,0 +1,10 @@
+#signup {
+  width: 400px;
+  .login_text {
+    cursor: pointer;
+    color: #333;
+    &:hover {
+      color: #888;
+    }
+  }
+}

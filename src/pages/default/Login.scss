@@ -15,6 +15,11 @@
 }
 @media (max-width: 600px) {
   #login {
-    max-width: 330px;
+    max-width: 350px;
+  }
+}
+@media (max-width: 350px) {
+  #login {
+    max-width: 320px;
   }
 }

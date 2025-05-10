@@ -21,7 +21,7 @@
           <v-btn @click="handleLogin" class="w-100" rounded color="#2563EB">登入</v-btn>
           <div class="d-flex justify-center my-8">
             <span class="me-3">還沒有帳號?</span>
-            <span class="login-text">立即註冊</span>
+            <span @click="goSignup" class="login-text cursor-pointer">立即註冊</span>
           </div>
           <div class="d-flex align-center mt-2">
             <v-divider class="flex-shrink-1" :thickness="2" />
@@ -30,12 +30,12 @@
           </div>
         </v-card-text>
         <v-card-actions class="d-flex justify-space-between">
-          <v-btn class="mx-5" variant="outlined" rounded text="Google">
+          <v-btn class="mx-2" variant="outlined" rounded text="Google">
             <template v-slot:prepend>
               <v-icon>mdi-google</v-icon>
             </template>
           </v-btn>
-          <v-btn class="mx-5" variant="outlined" rounded text="Facebook">
+          <v-btn class="mx-2" variant="outlined" rounded text="Facebook">
             <template v-slot:prepend>
               <v-icon>mdi-facebook</v-icon>
             </template>
@@ -59,14 +59,17 @@
     email: '',
     password: ''
   })
-
+  const dialog = ref(false);
   // 登入API
   const handleLogin = async () => {
     const { email, password } = loginInfo;
     const result = await userStore.login(email, password);
     if(result) {
-      router.push({ path: '/buyer' })
+      router.push('/buyer')
     }
+  }
+  const goSignup = () => {
+    router.push('/signup');
   }
 </script>
 

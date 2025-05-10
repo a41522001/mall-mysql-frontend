@@ -1,4 +1,11 @@
 import { type Component } from 'vue';
+import type { StickyProps } from 'vuetify/lib/components/VNavigationDrawer/sticky.mjs';
+export interface SignupDataForm {
+  name: string;
+  email: string;
+  pwd: string;
+  confirmPwd: string;
+}
 export interface ComponentList {
   [key: string]: Component;
 }
@@ -20,4 +27,20 @@ export interface Cart {
   quantity: number;
   name: string;
   price: number;
+}
+export interface OrderProduct {
+  image: string | null;
+  perPrice: number;
+  quantity: number;
+  productID: string;
+  orderItemID: string;
+  productName: string;
+}
+export interface OrderDetail {
+  userID: string;
+  email: string;
+  name: string;
+  orderID: string;
+  total: number;
+  products: OrderProduct[];
 }

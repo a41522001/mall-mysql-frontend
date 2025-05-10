@@ -12,9 +12,13 @@ declare module 'vue' {
     Cart: typeof import('./pages/buyer/Cart.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Loading: typeof import('./components/common/Loading.vue')['default']
+    Logout: typeof import('./components/dialog/LogoutDialog.vue')['default']
+    LogoutDialog: typeof import('./components/dialog/LogoutDialog.vue')['default']
+    MsgDialog: typeof import('./components/dialog/MsgDialog.vue')['default']
     Products: typeof import('./components/common/Products.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SignupDialog: typeof import('./pages/deafult/Signup.vue')['default']
     Upload: typeof import('./components/common/Upload.vue')['default']
   }
 }

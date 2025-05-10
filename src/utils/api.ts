@@ -1,4 +1,3 @@
-// import axios from 'axios';
 import axios, { AxiosError } from 'axios';
 const urlRes = await axios.get(import.meta.env.VITE_CONFIG_PATH);
 const { apiBaseUrl } = urlRes.data;
@@ -29,10 +28,9 @@ export const api = async (url: string, method: string, data: any = null, header:
       data
     });
     return res;
-  } catch (error) {
-    console.error(error);
-    const err = error as AxiosError<string>;
-    throw err.message || '未知錯誤'
+  } catch (error: any) {
+    // console.error(error.response.data);
+    throw error.response.data
   }
 }
 

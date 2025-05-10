@@ -32,14 +32,19 @@ export const useUserStore = defineStore('userStore', () => {
   }
 
   const login = async (email: string, password: string) => {
-    const res = await api('auth/login', 'post', { email, password });
-    if(res) {
-      const token = res?.data.token;
-      sessionStorage.setItem('token', token);
-      isLogin.value = true;
-      return token;
-    }else {
-      return null;
+    try {
+      const res = await api('auth/login', 'post', { email, password });
+      if(res) {
+        const token = res?.data.token;
+        sessionStorage.setItem('token', token);
+        isLogin.value = true;
+        return token;
+      }else {
+        return null;
+      }
+    } catch (error: any) {
+      console.log(error);
+      sysStore.openDialog(error.message);
     }
   }
 

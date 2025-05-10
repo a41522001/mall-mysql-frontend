@@ -19,6 +19,7 @@
     <v-list>
       <v-list-item @click="router.push({ name: 'product' })" title="商品列表" prepend-icon="mdi-cart-outline" />
       <v-list-item @click="" title="我的訂單" prepend-icon="mdi-list-box-outline" />
+      <v-list-item @click="dialog.logout = true" title="登出" prepend-icon="mdi-list-box-outline" />
     </v-list>
   </v-navigation-drawer>
   <v-main>
@@ -29,6 +30,7 @@
     </v-container>
   </v-main>
   <Loading />
+  <Logout v-model="dialog.logout"/>
 </template>
 
 <script lang="ts" setup>
@@ -39,11 +41,13 @@
   import Loading from '@/components/common/Loading.vue';
   import type { UserInfo } from '@/types/interface';
   import { apiGetUserInfo } from '@/utils/apiClient';
+  import Logout from '@/components/dialog/LogoutDialog.vue';
   const router = useRouter();
   const cartStore = useCartStore();
   const sysStore = useSysStore();
   const drawer = ref<boolean>(false);
   const isUserInfoReady = ref<boolean>(false);
+
   const userInfo: UserInfo = reactive({
     id: '',
     name: '',
@@ -51,7 +55,8 @@
   });
   provide('userInfo', readonly(userInfo));
   const dialog = reactive({
-    cart: false
+    cart: false,
+    logout: false,
   })
   const openCartPage = () => {
     const isCartListLength = cartStore.cartListLength;
