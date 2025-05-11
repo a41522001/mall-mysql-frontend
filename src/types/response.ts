@@ -5,6 +5,6 @@ export interface ResponseType<T> {
   message: string;
   time: string;
 }
-export interface ResponseProduct extends Product {};
-export interface ResponseUserInfo extends UserInfo {};
-export interface ResponseCart extends Cart {};
+export interface ResponseProduct extends ResponseType<Product[]>{};
+export interface ResponseUserInfo extends ResponseType<UserInfo> {};
+export interface ResponseCart extends ResponseType<Cart[]> {};

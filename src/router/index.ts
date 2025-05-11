@@ -75,7 +75,7 @@ router.beforeEach(async (to, from) => {
   const userStore = useUserStore();
   if(!to.path.startsWith('/login') && !to.path.startsWith('/signup')) {
     if(sessionStorage.getItem('token')) {
-      await userStore.getUserInfo();
+      // await userStore.getUserInfo();
       window.scrollTo(0, 0);
       return true;
     }else {

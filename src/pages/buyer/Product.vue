@@ -116,34 +116,26 @@
       userId: userId
     }
     try {
-      sysStore.setLoading(true);
       await apiAddCart(product);
       dialog.product = false;
       handleGetProduct();
       closeDialog();
-      cartStore.setCartList(userId);
+      cartStore.getCartList(userId);
       sysStore.openDialog('成功添加購物車');
-    } catch (error) {
-      sysStore.openDialog(error as string);
-    } finally {
-      sysStore.setLoading(false);
+    } catch (error: any) {
+      sysStore.openDialog(error.message as string);
     }
   }
 
   // 取得商品列表API
   const handleGetProduct = async (): Promise<void> => {
-    try {
-      sysStore.setLoading(true);
-      const res = await apiGetProduct();
-      products.splice(0, products.length, ...res);
-    } catch (error) {
-      sysStore.openDialog(error as string);
-    } finally {
-      sysStore.setLoading(false);
-    }
+    const res = await apiGetProduct();
+    products.splice(0, products.length, ...res.data);
   }
 
   onMounted(async () => {
+    console.log(123333);
+    
     if(sessionStorage.getItem('token')) {
       handleGetProduct();
     }

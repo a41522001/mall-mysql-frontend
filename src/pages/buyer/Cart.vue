@@ -58,15 +58,17 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive, watch, computed, ref } from 'vue';
-  import { useUserStore } from '@/stores/userStore';
+  import { reactive, watch, computed, ref, inject } from 'vue';
   import { useCartStore } from '@/stores/cartStore';
   import { useSysStore } from '@/stores/sysStore';
   import { Response } from '@/utils/res';
   import { useDisplay } from 'vuetify'
   import { useRouter, type Router } from 'vue-router';
+  import type { UserInfo } from '@/types/interface';
+  import { apiDeleteCart } from '@/utils/apiClient';
   const { name } = useDisplay()
-  const userStore = useUserStore();
+  const userInfo = inject<UserInfo>('userInfo')!;
+  const { id: userId } = userInfo;
   const cartStore = useCartStore();
   const sysStore = useSysStore();
   const router: Router = useRouter();
@@ -113,13 +115,13 @@
     const data = {
       productID,
       quantity,
-      userID: userStore.userInfo.id
+      userID: userId
     }
     try {
-      await Response.SendResponse('cart/changeCartQuantity', 'post', data)
+      await Response.SendResponse('cart/changeCartQuantity', 'post', data, undefined, true);
     } catch (error: any) {
-      sysStore.openDialog(error)
-      const stock = error.split(' ')[1];
+      sysStore.openDialog(error.message);
+      const stock = error.message.split(' ')[1];
       nextTick(() => {
         quantities[productID] = +stock;
       })
@@ -142,14 +144,12 @@
   const deleteCart = async (): Promise<void> => {
     const data = {
       productID: productId.value,
-      userID: userStore.userInfo.id
+      userID: userId
     }
-    const res = await Response.SendResponse('cart/deleteCart', 'post', data);
-    if(res === null) {
-      dialog.deleteCart = false;
-      sysStore.openDialog('刪除成功');
-      cartStore.getCartList();
-    }
+    const res = await apiDeleteCart(data);
+    dialog.deleteCart = false;
+    sysStore.openDialog(res.message);
+    cartStore.getCartList();
   }
   const handleCheckDialog = () => {
     dialog.checkout = true;
@@ -175,7 +175,7 @@
     const data = {
       cartList: newData,
       total: total.value,
-      userId: userStore.userInfo.id
+      userId: userId
     }
     try {
       const res = await Response.SendResponse('order/addOrder', 'post', data);
@@ -209,7 +209,7 @@
 
     if(cartList.value.length === 0) {
       sysStore.openDialog('購物車內無商品');
-      router.push({ name: 'product' });
+      router.push('/buyer');
     }
     nextTick(() => {
       cartStore.cartList.forEach(cart => {

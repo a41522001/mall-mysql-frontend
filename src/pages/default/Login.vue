@@ -56,10 +56,9 @@
   const router = useRouter();
   const userStore = useUserStore();
   const loginInfo = reactive({
-    email: '',
-    password: ''
+    email: '333@333.com',
+    password: '333333'
   })
-  const dialog = ref(false);
   // 登入API
   const handleLogin = async () => {
     const { email, password } = loginInfo;

@@ -17,7 +17,7 @@
   <v-navigation-drawer v-model="drawer" temporary app
     :location="$vuetify.display.mobile ? 'bottom' : 'left'">
     <v-list>
-      <v-list-item @click="router.push({ name: 'product' })" title="商品列表" prepend-icon="mdi-cart-outline" />
+      <v-list-item @click="router.push('/buyer/')" title="商品列表" prepend-icon="mdi-cart-outline" />
       <v-list-item @click="" title="我的訂單" prepend-icon="mdi-list-box-outline" />
       <v-list-item @click="dialog.logout = true" title="登出" prepend-icon="mdi-list-box-outline" />
     </v-list>
@@ -64,38 +64,27 @@
       sysStore.openDialog('購物車內無商品');
       return
     };
-    router.push({ name: 'cart' });
+    router.push('/buyer/cart');
   }
   // 取得使用者資訊API
   const getUserInfo = async () => {
     try {
-      sysStore.setLoading(true);
       const res = await apiGetUserInfo();
-      console.log(res);
-      Object.assign(userInfo, {...res});
+      Object.assign(userInfo, {...res.data});
       isUserInfoReady.value = true;
     } catch (error) {
       sessionStorage.removeItem('token');
       router.push('/login');
       sysStore.openDialog('請重新登入');
-    } finally {
-      sysStore.setLoading(false);
-    }
+    } 
   }
   // 設置購物車資訊API
-  const setCartList = async () => {
-    try {
-      sysStore.setLoading(true);
-      cartStore.setCartList(userInfo.id);
-    } catch (error) {
-      sysStore.openDialog(error as string);
-    } finally {
-      sysStore.setLoading(false);
-    }
+  const getCartList = async () => {
+    cartStore.getCartList(userInfo.id);
   }
   
   onMounted(async () => {
     await getUserInfo();
-    await setCartList();
+    await getCartList();
   })
 </script>

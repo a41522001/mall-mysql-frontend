@@ -3,3 +3,7 @@ export interface RequestProduct {
   quantity: number;
   userId: string;
 }
+export interface DeleteCart {
+  productID: string;
+  userID: string;
+}
