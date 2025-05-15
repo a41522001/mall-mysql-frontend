@@ -58,22 +58,21 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive, watch, computed, ref, inject } from 'vue';
+  import { reactive, computed, ref, inject, shallowRef } from 'vue';
   import { useCartStore } from '@/stores/cartStore';
   import { useSysStore } from '@/stores/sysStore';
-  import { Response } from '@/utils/res';
-  import { useDisplay } from 'vuetify'
   import { useRouter, type Router } from 'vue-router';
   import type { UserInfo } from '@/types/interface';
-  import { apiDeleteCart } from '@/utils/apiClient';
-  const { name } = useDisplay()
+  import { apiDeleteCart, apiUpdateCartQuantity, apiAddOrder } from '@/utils/apiClient';
+  defineOptions({
+    inheritAttrs: false
+  })
   const userInfo = inject<UserInfo>('userInfo')!;
   const { id: userId } = userInfo;
   const cartStore = useCartStore();
   const sysStore = useSysStore();
   const router: Router = useRouter();
   const cartList = computed(() => cartStore.cartList);
-
   const quantities = reactive<Record<string, number>>({});
   // 選擇框
   const isAddOrder = reactive<Record<string, boolean>>({});
@@ -106,7 +105,7 @@
   // 判斷是否需回復購物車數量的flag
   const inputFlag = shallowRef<boolean>(false);
 
-  // 確認庫存
+  // 確認庫存(如果足夠則更新購物車數量)
   const handleCheckStock = async (productID: string, quantity: number): Promise<void> => {
     if(quantity === 0) {
       openDeleteCartDialog(productID, true);
@@ -118,7 +117,7 @@
       userID: userId
     }
     try {
-      await Response.SendResponse('cart/changeCartQuantity', 'post', data, undefined, true);
+      await apiUpdateCartQuantity(data);
     } catch (error: any) {
       sysStore.openDialog(error.message);
       const stock = error.message.split(' ')[1];
@@ -178,15 +177,14 @@
       userId: userId
     }
     try {
-      const res = await Response.SendResponse('order/addOrder', 'post', data);
-      console.log(res);
-      if(res) {
-        await cartStore.getCartList();
+      const res = await apiAddOrder(data);
+      if(res.data) {
+        await cartStore.getCartList(userId);
         init();
         router.push({ 
           name: 'checkout', 
           params: { 
-            orderId: res 
+            orderId: res.data
           } 
         });
       }

@@ -44,3 +44,16 @@ export interface OrderDetail {
   total: number;
   products: OrderProduct[];
 }
+export interface System {
+  prop: string;
+  name: string;
+}
+export interface Select {
+  title: string;
+  value: string;
+}
+export interface OrderQuery {
+  status: string;
+  date: string;
+  orderNo: string;
+}

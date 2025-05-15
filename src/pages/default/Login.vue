@@ -47,12 +47,10 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive, shallowReactive, defineAsyncComponent, ref, onMounted, computed, nextTick } from 'vue';
-  import { api } from "@/utils/api";
-  import { Response } from '@/utils/res';
+  import { reactive } from 'vue';
   import { useUserStore } from '@/stores/userStore';
-  import { storeToRefs } from "pinia";
   import { useRouter } from 'vue-router';
+  import { apiLogin } from '@/utils/apiClient';
   const router = useRouter();
   const userStore = useUserStore();
   const loginInfo = reactive({
@@ -61,11 +59,9 @@
   })
   // 登入API
   const handleLogin = async () => {
-    const { email, password } = loginInfo;
-    const result = await userStore.login(email, password);
-    if(result) {
-      router.push('/buyer')
-    }
+    const res = await apiLogin(loginInfo);
+    sessionStorage.setItem('token', res.token);
+    router.push('/buyer');
   }
   const goSignup = () => {
     router.push('/signup');

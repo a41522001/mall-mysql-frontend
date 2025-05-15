@@ -1,7 +1,25 @@
-import type { ResponseProduct, ResponseUserInfo, ResponseCart, ResponseType } from '@/types/response';
-import type { DeleteCart, RequestProduct } from '@/types/request';
+import type { ResponseProduct, ResponseUserInfo, ResponseCart, ResponseType, ResponseSignOrderDetail, ResponseLogin, ResponseSystem } from '@/types/response';
+import type { RequestDeleteCart, RequestProduct, RequestUpdateCartQuantity, RequestAddOrder, RequestSingleOrder, RequestCheckout, RequestSignup, RequestLogin } from '@/types/request';
 import { Response } from './res';  
 import { useSysStore } from '@/stores/sysStore';
+// 註冊
+export const apiSignup = async (signupData: RequestSignup): Promise<ResponseType<null>> => {
+  try {
+    const res = await Response.SendResponse<ResponseType<null>>('auth/signup', 'post', signupData);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// 登入
+export const apiLogin = async (loginData: RequestLogin): Promise<ResponseLogin> => {
+  try {
+    const res = await Response.SendResponse<ResponseLogin>('auth/login', 'post', loginData);
+    return res
+  } catch (error) {
+    throw error;
+  }
+}
 // 取得UserInfo
 export const apiGetUserInfo = async (): Promise<ResponseUserInfo> => {
   try {
@@ -10,6 +28,23 @@ export const apiGetUserInfo = async (): Promise<ResponseUserInfo> => {
   } catch (error) {
     throw error;
   }
+}
+// 取得系統設定
+export const apiGetSystemSetting = async (sysNo: string): Promise<ResponseSystem> => {
+    try {
+    const res = await Response.SendResponse<ResponseSystem>(`system/getSystem?sysNo=${sysNo}`, 'get');
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// 新增商品
+export const apiAddProduct = async () => {
+
+}
+// 上傳商品圖片
+export const apiUploadProductImg = async () => {
+
 }
 // 取得商品
 export const apiGetProduct = async (): Promise<ResponseProduct> => {
@@ -38,7 +73,7 @@ export const apiGetCartList = async (userId: string): Promise<ResponseCart> => {
   }
 }
 // 刪除購物車
-export const apiDeleteCart = async (deleteData: DeleteCart) => {
+export const apiDeleteCart = async (deleteData: RequestDeleteCart): Promise<ResponseType<null>> => {
   try {
     const res = await Response.SendResponse<ResponseType<null>>('cart/deleteCart', 'post', deleteData);
     return res;
@@ -46,5 +81,49 @@ export const apiDeleteCart = async (deleteData: DeleteCart) => {
     throw error;
   }
 }
-// TODO:
 // 更改購物車數量
+export const apiUpdateCartQuantity = async (updateQuantityData: RequestUpdateCartQuantity): Promise<ResponseType<null>> => {
+  try {
+    const res = await Response.SendResponse<ResponseType<null>>('cart/changeCartQuantity', 'post', updateQuantityData, undefined, true);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// 新增訂單
+export const apiAddOrder = async (addOrderData: RequestAddOrder): Promise<ResponseType<string>> => {
+  try {
+    const res = await Response.SendResponse<ResponseType<string>>('order/addOrder', 'post', addOrderData);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// 取得單筆訂單資訊
+export const apiGetSingleOrderDetail = async (getSingleDetailData: RequestSingleOrder): Promise<ResponseSignOrderDetail> => {
+  try {
+    const res = await Response.SendResponse<ResponseSignOrderDetail>('order/getSingleOrderDetail', 'post', getSingleDetailData);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// 取得訂單資訊
+export const apiGetOrder = async (userId: string) => {
+  try {
+    console.log(userId);
+    
+    const res = await Response.SendResponse(`order/getOrder/${userId}`, 'get');
+  } catch (error) {
+    throw error;
+  }
+}
+// 結帳
+export const apiCheckout = async (checkoutData: RequestCheckout): Promise<ResponseType<string>> => {
+  try {
+    const res = await Response.SendResponse<ResponseType<string>>('checkout/checkout', 'post', checkoutData);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}

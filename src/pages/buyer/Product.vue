@@ -3,7 +3,7 @@
     <Carousels />
   </div>
   <v-row>
-    <v-col v-for="{ id, name, price, quantity, image } in products" :key="id" cols="12" sm="6" md="4" lg="3" >
+    <v-col v-for="{ id, name, price, quantity, image } in productList" :key="id" cols="12" sm="6" md="4" lg="3" >
       <v-card>
         <v-sheet width="100%" height="10rem">
           <img :src="image" class="w-100 h-100">
@@ -62,12 +62,15 @@
   import { useRouter } from 'vue-router';
   import Carousels from '@/components/common/Carousels.vue';
   import { apiGetProduct, apiAddCart } from '@/utils/apiClient';
+  interface Props {
+    searchString: string;
+  }
   const router = useRouter();
   const sysStore = useSysStore();
   const cartStore = useCartStore();
   const userInfo = inject<UserInfo>('userInfo')!;
   const { id: userId } = userInfo;
-
+  const props = defineProps<Props>();
   const products: Product[] = shallowReactive([]);
   const currentProduct: Product = shallowReactive({
     id: '',
@@ -76,7 +79,13 @@
     quantity: 0,
     image: ''
   });
-
+  const productList = computed((): Product[] => {
+    if(!props.searchString) return products;
+    return products.filter(item => {
+      const productName = item.name.toUpperCase();
+      return productName.includes(props.searchString.toUpperCase())
+    });
+  })
   const currentProductTotalPrice = computed((): number => currentProduct.price * quantity.value);
   const quantity = ref<number>(1);
   const dialog = reactive({
@@ -134,8 +143,6 @@
   }
 
   onMounted(async () => {
-    console.log(123333);
-    
     if(sessionStorage.getItem('token')) {
       handleGetProduct();
     }

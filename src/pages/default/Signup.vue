@@ -48,6 +48,7 @@
   import type { SignupDataForm } from '@/types/interface';
   import { useSysStore } from '@/stores/sysStore';
   import { validateEmail } from '@/utils/validate';
+  import { apiSignup } from '@/utils/apiClient';
   const sysStore = useSysStore();
   const dataForm: SignupDataForm = reactive({
     name: '',
@@ -102,14 +103,15 @@
       email: dataForm.email,
       password: dataForm.pwd
     }
-    sysStore.setLoading(true);
-    const res = await Response.SendResponse<ResponseType<null>>('auth/signup', 'post', data);
-    sysStore.setLoading(false);
+    const res = await apiSignup(data);
     sysStore.openDialog(res.message);
     for(const k in dataForm) {
       const key = k as keyof SignupDataForm;
       dataForm[key] = '';
     }
+    nextTick(() => {
+      form.value!.resetValidation();
+    })
   }
 </script>
 

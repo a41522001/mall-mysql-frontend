@@ -7,7 +7,7 @@ import { useSysStore } from './sysStore';
 export const useUserStore = defineStore('userStore', () => {
   const sysStore = useSysStore();
   const router = useRouter();
-  const isLogin = ref(false);
+  const isLogin = ref<boolean>(false);
   const userInfo: UserInfo = reactive({
     id: '',
     name: '',
@@ -34,6 +34,8 @@ export const useUserStore = defineStore('userStore', () => {
   const login = async (email: string, password: string) => {
     try {
       const res = await api('auth/login', 'post', { email, password });
+      console.log(res);
+      
       if(res) {
         const token = res?.data.token;
         sessionStorage.setItem('token', token);

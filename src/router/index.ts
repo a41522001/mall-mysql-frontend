@@ -63,7 +63,12 @@ const routes = [
         name: 'checkout',
         component: defineAsyncComponent(() => import('@/pages/buyer/Checkout.vue')),
         props: true
-      }
+      },
+      {
+        path: 'order',
+        name: 'order',
+        component: defineAsyncComponent(() => import('@/pages/buyer/Order.vue'))
+      },
     ]
   }
 ]

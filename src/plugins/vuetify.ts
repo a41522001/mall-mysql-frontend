@@ -6,6 +6,7 @@
 
 // Styles
 import { VFileUpload } from 'vuetify/labs/VFileUpload'
+import { VDateInput } from 'vuetify/labs/VDateInput'
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 import '@/styles/style.scss';
@@ -60,6 +61,7 @@ export default createVuetify({
   },
   components: {
     VFileUpload,
+    VDateInput,
   },
   display: {
     mobileBreakpoint: 'sm',
