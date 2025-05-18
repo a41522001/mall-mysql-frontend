@@ -1,0 +1,42 @@
+.order_no {
+  font-size: 1.75rem;
+  color: #2b48ec;
+  font-weight: 600;
+  margin-bottom: .5rem;
+}
+.order_date {
+  font-size: 1rem;
+  color: #888;
+}
+.order_consumer {
+  font-weight: 500;
+  margin-bottom: .5rem;
+  font-size: 1rem;
+}
+.order_consumer_info {
+  font-weight: 400;
+  color: #353535;
+  font-size: 1rem;
+}
+.order_amount_container {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+}
+.order_amount_title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.order_amount {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2b48ec;
+}
+@media (max-width: 360px) {
+  .order_no {
+    font-size: 1.5rem;
+  }
+}

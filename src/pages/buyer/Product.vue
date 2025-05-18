@@ -39,7 +39,7 @@
             <div>單價: ${{ currentProduct.price }}</div>
           </v-col>
           <v-col cols="12">
-            <div>
+            <div class="mb-2">
               <v-number-input v-model="quantity" :max="currentProduct.quantity" :min="1" label="數量" control-variant="split"
                 :hideInput="false" :inset="false" :hide-details="true" density="compact" />
             </div>

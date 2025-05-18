@@ -1,7 +1,6 @@
-import type { ResponseProduct, ResponseUserInfo, ResponseCart, ResponseType, ResponseSignOrderDetail, ResponseLogin, ResponseSystem } from '@/types/response';
+import type { ResponseProduct, ResponseUserInfo, ResponseCart, ResponseType, ResponseSignOrderDetail, ResponseLogin, ResponseSystem, ResponseAllOrder, ResponseCancelOrder } from '@/types/response';
 import type { RequestDeleteCart, RequestProduct, RequestUpdateCartQuantity, RequestAddOrder, RequestSingleOrder, RequestCheckout, RequestSignup, RequestLogin } from '@/types/request';
 import { Response } from './res';  
-import { useSysStore } from '@/stores/sysStore';
 // 註冊
 export const apiSignup = async (signupData: RequestSignup): Promise<ResponseType<null>> => {
   try {
@@ -23,7 +22,7 @@ export const apiLogin = async (loginData: RequestLogin): Promise<ResponseLogin> 
 // 取得UserInfo
 export const apiGetUserInfo = async (): Promise<ResponseUserInfo> => {
   try {
-    const res = await Response.SendResponse<ResponseUserInfo>('auth/userInfo', 'post', {}, undefined, true);
+    const res = await Response.SendResponse<ResponseUserInfo>('auth/userInfo', 'get', {}, undefined, true);
     return res;
   } catch (error) {
     throw error;
@@ -108,12 +107,20 @@ export const apiGetSingleOrderDetail = async (getSingleDetailData: RequestSingle
     throw error;
   }
 }
-// 取得訂單資訊
-export const apiGetOrder = async (userId: string) => {
+// 取得所有訂單資訊
+export const apiGetOrder = async (userId: string): Promise<ResponseAllOrder> => {
   try {
-    console.log(userId);
-    
-    const res = await Response.SendResponse(`order/getOrder/${userId}`, 'get');
+    const res = await Response.SendResponse<ResponseAllOrder>(`order/getOrder/${userId}`, 'get');
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// 取消訂單
+export const apiCancelOrder = async (orderId: {orderId: string}): Promise<ResponseCancelOrder> => {
+  try {
+    const res = await Response.SendResponse<ResponseCancelOrder>('order/cancelOrder', 'post', orderId);
+    return res;
   } catch (error) {
     throw error;
   }

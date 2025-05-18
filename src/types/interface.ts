@@ -1,5 +1,4 @@
 import { type Component } from 'vue';
-import type { StickyProps } from 'vuetify/lib/components/VNavigationDrawer/sticky.mjs';
 export interface SignupDataForm {
   name: string;
   email: string;
@@ -56,4 +55,12 @@ export interface OrderQuery {
   status: string;
   date: string;
   orderNo: string;
+}
+export type Status = 'cancel' | 'paying' | 'paid';
+export interface AllOrder {
+  orderId: string;
+  totalPrice: number;
+  status: Status;
+  createdDate: string;
+  product: { quantity: number; productName: string;}[];
 }

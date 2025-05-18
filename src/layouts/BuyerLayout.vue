@@ -19,6 +19,7 @@
     <v-list>
       <v-list-item @click="router.push('/buyer/')" title="商品列表" prepend-icon="mdi-cart-outline" />
       <v-list-item @click="router.push('/buyer/order')" title="我的訂單" prepend-icon="mdi-list-box-outline" />
+      <v-list-item @click="dialog.logout = true" title="我是賣家" prepend-icon="mdi-logout" />
       <v-list-item @click="dialog.logout = true" title="登出" prepend-icon="mdi-logout" />
     </v-list>
   </v-navigation-drawer>
@@ -31,6 +32,7 @@
   </v-main>
   <Loading />
   <Logout v-model="dialog.logout"/>
+  <ConfirmDialog v-model="sysStore.confirmDialog" />
 </template>
 
 <script lang="ts" setup>
@@ -43,6 +45,7 @@
   import type { UserInfo } from '@/types/interface';
   import { apiGetUserInfo } from '@/utils/apiClient';
   import Logout from '@/components/dialog/LogoutDialog.vue';
+  import ConfirmDialog from '@/components/dialog/ConfirmDialog.vue';
   const router = useRouter();
   const cartStore = useCartStore();
   const sysStore = useSysStore();
