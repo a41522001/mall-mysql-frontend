@@ -3,5 +3,5 @@
 </template>
 
 <script lang="ts" setup>
-  import Upload from '@/components/common/Upload.vue'
+  import Upload from '@/pages/seller/ProductMange/Upload.vue'
 </script>

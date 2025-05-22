@@ -42,4 +42,12 @@ export class Response {
       throw error;
     }
   }
+  static async SendFormDataResponse(url: string, method: string, formData: any, header: any, config: object) {
+    try {
+      const res = await api(url, method, formData, header, config, 20000);
+      return res.data;
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }

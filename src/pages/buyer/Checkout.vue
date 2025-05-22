@@ -53,12 +53,11 @@
 </template>
 
 <script setup lang="ts">
-import Apple from '@/../public/image/Apple.png'
+  import Apple from '@/../public/image/Apple.png'
   import { reactive, watch, computed, ref, onMounted, inject } from 'vue';
   import { useUserStore } from '@/stores/userStore';
   import { useCartStore } from '@/stores/cartStore';
   import { useSysStore } from '@/stores/sysStore';
-  import { Response } from '@/utils/res';
   import { useDisplay } from 'vuetify'
   import { useRouter, type Router, useRoute } from 'vue-router';
   import type { OrderProduct, OrderDetail, UserInfo } from '@/types/interface';

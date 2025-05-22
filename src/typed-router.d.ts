@@ -25,8 +25,12 @@ declare module 'vue-router/auto-routes' {
     '/default/Login': RouteRecordInfo<'/default/Login', '/default/Login', Record<never, never>, Record<never, never>>,
     '/default/Signup': RouteRecordInfo<'/default/Signup', '/default/Signup', Record<never, never>, Record<never, never>>,
     '/home/Home': RouteRecordInfo<'/home/Home', '/home/Home', Record<never, never>, Record<never, never>>,
-    '/sell/AddProduct': RouteRecordInfo<'/sell/AddProduct', '/sell/AddProduct', Record<never, never>, Record<never, never>>,
-    '/sell/dashboard/Dashboard': RouteRecordInfo<'/sell/dashboard/Dashboard', '/sell/dashboard/Dashboard', Record<never, never>, Record<never, never>>,
-    '/sell/Product': RouteRecordInfo<'/sell/Product', '/sell/Product', Record<never, never>, Record<never, never>>,
+    '/seller/Analysis': RouteRecordInfo<'/seller/Analysis', '/seller/Analysis', Record<never, never>, Record<never, never>>,
+    '/seller/Overview': RouteRecordInfo<'/seller/Overview', '/seller/Overview', Record<never, never>, Record<never, never>>,
+    '/seller/Product': RouteRecordInfo<'/seller/Product', '/seller/Product', Record<never, never>, Record<never, never>>,
+    '/seller/ProductManage': RouteRecordInfo<'/seller/ProductManage', '/seller/ProductManage', Record<never, never>, Record<never, never>>,
+    '/seller/ProductMange/AddProduct': RouteRecordInfo<'/seller/ProductMange/AddProduct', '/seller/ProductMange/AddProduct', Record<never, never>, Record<never, never>>,
+    '/seller/ProductMange/ProductList': RouteRecordInfo<'/seller/ProductMange/ProductList', '/seller/ProductMange/ProductList', Record<never, never>, Record<never, never>>,
+    '/seller/ProductMange/Upload': RouteRecordInfo<'/seller/ProductMange/Upload', '/seller/ProductMange/Upload', Record<never, never>, Record<never, never>>,
   }
 }

@@ -11,6 +11,7 @@ import { useUserStore } from '@/stores/userStore';
 import { components } from 'vuetify/dist/vuetify.js';
 import Login from '@/pages/default/Login.vue';
 import BuyerLayout from '@/layouts/BuyerLayout.vue';
+import SellerLayout from '@/layouts/sellerLayout.vue';
 import Signup from '@/pages/default/Signup.vue';
 const routes = [
   {
@@ -27,21 +28,6 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: Signup
-  },
-  {
-    path: '/sell',
-    name: 'sell',
-    children: [
-      {
-        path: '',
-        component: defineAsyncComponent(() => import('@/pages/sell/dashboard/Dashboard.vue'))
-      },
-      {
-        path: 'product',
-        name: 'sellProduct',
-        component: defineAsyncComponent(() => import('@/pages/sell/Product.vue'))
-      }
-    ]
   },
   {
     path: '/buyer',
@@ -70,6 +56,28 @@ const routes = [
         component: defineAsyncComponent(() => import('@/pages/buyer/Order.vue'))
       },
     ]
+  },
+  {
+    path: '/seller',
+    name: 'seller',
+    component: SellerLayout,
+    children: [
+      {
+        path: '',
+        name: 'overview',
+        component: defineAsyncComponent(() => import('@/pages/seller/Overview.vue'))
+      },
+      {
+        path: 'analysis',
+        name: 'analysis',
+        component: defineAsyncComponent(() => import('@/pages/seller/Analysis.vue'))
+      },
+      {
+        path: 'productManage',
+        name: 'productManage',
+        component: defineAsyncComponent(() => import('@/pages/seller/ProductManage.vue'))
+      }
+    ]
   }
 ]
 const router = createRouter({
@@ -77,10 +85,8 @@ const router = createRouter({
   routes
 })
 router.beforeEach(async (to, from) => {
-  const userStore = useUserStore();
   if(!to.path.startsWith('/login') && !to.path.startsWith('/signup')) {
     if(sessionStorage.getItem('token')) {
-      // await userStore.getUserInfo();
       window.scrollTo(0, 0);
       return true;
     }else {

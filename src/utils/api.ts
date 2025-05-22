@@ -3,7 +3,7 @@ const urlRes = await axios.get(import.meta.env.VITE_CONFIG_PATH);
 const { apiBaseUrl } = urlRes.data;
 const apiClient = axios.create({
   baseURL: apiBaseUrl,
-  timeout: 5000,
+  // timeout: 5000,
 })
 
 apiClient.interceptors.request.use(config => {
@@ -16,7 +16,7 @@ apiClient.interceptors.request.use(config => {
     return Promise.reject(error);
   }
 )
-export const api = async (url: string, method: string, data: any = null, header: any = {}) => {
+export const api = async (url: string, method: string, data: any = null, header: any = {}, config: object = {}, timeout: number = 10000) => {
   try {
     const res = await apiClient({
       url,
@@ -25,11 +25,12 @@ export const api = async (url: string, method: string, data: any = null, header:
         ...header,
         'Content-Type': header['Content-Type'] ?? 'application/json'
       },
-      data
+      timeout,
+      data,
+      ...config
     });
     return res;
   } catch (error: any) {
-    // console.error(error.response.data);
     throw error.response.data
   }
 }

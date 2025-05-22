@@ -14,6 +14,7 @@ export interface Product {
   price: number;
   quantity: number;
   image: string;
+  sellUserId: string;
 }
 export interface UserInfo {
   id: string;
@@ -64,3 +65,8 @@ export interface AllOrder {
   createdDate: string;
   product: { quantity: number; productName: string;}[];
 }
+export interface AddProductDataForm {
+  productName: null | string;
+  productPrice: null | string;
+  quantity: null | string;
+} 

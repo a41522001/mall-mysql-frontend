@@ -1,5 +1,5 @@
 import type { ResponseProduct, ResponseUserInfo, ResponseCart, ResponseType, ResponseSignOrderDetail, ResponseLogin, ResponseSystem, ResponseAllOrder, ResponseCancelOrder } from '@/types/response';
-import type { RequestDeleteCart, RequestProduct, RequestUpdateCartQuantity, RequestAddOrder, RequestSingleOrder, RequestCheckout, RequestSignup, RequestLogin } from '@/types/request';
+import type { RequestDeleteCart, RequestProduct, RequestUpdateCartQuantity, RequestAddOrder, RequestSingleOrder, RequestCheckout, RequestSignup, RequestLogin, RequestAddProduct } from '@/types/request';
 import { Response } from './res';  
 // 註冊
 export const apiSignup = async (signupData: RequestSignup): Promise<ResponseType<null>> => {
@@ -30,7 +30,7 @@ export const apiGetUserInfo = async (): Promise<ResponseUserInfo> => {
 }
 // 取得系統設定
 export const apiGetSystemSetting = async (sysNo: string): Promise<ResponseSystem> => {
-    try {
+  try {
     const res = await Response.SendResponse<ResponseSystem>(`system/getSystem?sysNo=${sysNo}`, 'get');
     return res;
   } catch (error) {
@@ -38,17 +38,36 @@ export const apiGetSystemSetting = async (sysNo: string): Promise<ResponseSystem
   }
 }
 // 新增商品
-export const apiAddProduct = async () => {
-
+export const apiAddProduct = async (data: RequestAddProduct): Promise<ResponseType<string>> => {
+  try {
+    const res = await Response.SendResponse<ResponseType<string>>('sell/addProduct', 'post', data);
+    return res;
+  } catch (error) {
+    throw error;
+  }
 }
 // 上傳商品圖片
-export const apiUploadProductImg = async () => {
-
+export const apiUploadProductImg = async (formdata: FormData, config: object) => {
+  try {
+    const res = await Response.SendFormDataResponse('sell/addProductImage', 'post', formdata, {'Content-Type': 'multipart/form-data' }, config);
+    console.log(res);
+    return res;
+  } catch (error) {
+    throw error;
+  }
 }
 // 取得商品
 export const apiGetProduct = async (): Promise<ResponseProduct> => {
   try {
     const res = await Response.SendResponse<ResponseProduct>('product/getProduct', 'get');
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+export const apiGetSellProduct = async (userId: string) => {
+  try {
+    const res = await Response.SendResponse<ResponseProduct>(`sell/getProduct?userId=${userId}`, 'get');
     return res;
   } catch (error) {
     throw error;

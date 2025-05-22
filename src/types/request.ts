@@ -38,3 +38,10 @@ export interface RequestSingleOrder {
 export interface RequestCheckout extends OrderDetail {
   address: string;
 }
+export interface RequestAddProduct {
+  userId: string;
+  productName: string;
+  price: number;
+  quantity: number;
+  url: string;
+}
