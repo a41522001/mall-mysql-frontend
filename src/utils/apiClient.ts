@@ -47,10 +47,9 @@ export const apiAddProduct = async (data: RequestAddProduct): Promise<ResponseTy
   }
 }
 // 上傳商品圖片
-export const apiUploadProductImg = async (formdata: FormData, config: object) => {
+export const apiUploadProductImg = async (formdata: FormData, config: object): Promise<ResponseType<string>> => {
   try {
-    const res = await Response.SendFormDataResponse('sell/addProductImage', 'post', formdata, {'Content-Type': 'multipart/form-data' }, config);
-    console.log(res);
+    const res = await Response.SendFormDataResponse<ResponseType<string>>('sell/addProductImage', 'post', formdata, {'Content-Type': 'multipart/form-data' }, config);
     return res;
   } catch (error) {
     throw error;
@@ -65,6 +64,7 @@ export const apiGetProduct = async (): Promise<ResponseProduct> => {
     throw error;
   }
 }
+// 取得賣家商品
 export const apiGetSellProduct = async (userId: string) => {
   try {
     const res = await Response.SendResponse<ResponseProduct>(`sell/getProduct?userId=${userId}`, 'get');

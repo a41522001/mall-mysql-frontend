@@ -10,11 +10,11 @@ import type { ResponseType } from '@/types/response';
 //   time: string;
 // }
 export class Response {
+  // common
   static async SendResponse<T>(url: string, method: string, data?: any, header?: any, isReturnErrorResponse: boolean = false): Promise<T> {
     const sysStore = useSysStore();
     try {
       sysStore.setLoading(true);
-
       const res = await api(url, method, data, header);
       return res.data;
     } catch (error: any) {
@@ -30,6 +30,7 @@ export class Response {
       sysStore.setLoading(false);
     }
   }
+  // 金流專用
   static async SendPaymentResponse(url: string, method: string, data?: any, header?: any): Promise<any> {
     try {
       const res = await api(url, method, data, header);
@@ -42,7 +43,8 @@ export class Response {
       throw error;
     }
   }
-  static async SendFormDataResponse(url: string, method: string, formData: any, header: any, config: object) {
+  // FormData專用
+  static async SendFormDataResponse<T>(url: string, method: string, formData: any, header: any, config: object): Promise<T> {
     try {
       const res = await api(url, method, formData, header, config, 20000);
       return res.data;
