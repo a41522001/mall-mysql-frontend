@@ -32,7 +32,6 @@ export const useSysStore = defineStore('sysStore', () => {
     router.push('/login');
   }
 
-
   return {
     dialog,
     dialogText,

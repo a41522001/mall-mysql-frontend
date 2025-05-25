@@ -1,4 +1,4 @@
-import type { OrderDetail } from '@/types/interface'
+import type { OrderDetail, Period } from '@/types/interface'
 interface CartList {
   productID: string;
   quantity: number;
@@ -44,4 +44,12 @@ export interface RequestAddProduct {
   price: number;
   quantity: number;
   url: string;
+}
+export interface RequestChangeProductIsActive {
+  productId: string;
+  isActive: 0 | 1;
+}
+export interface RequestChartData {
+  userId: string,
+  period: Period
 }

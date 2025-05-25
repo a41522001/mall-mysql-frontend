@@ -12,10 +12,30 @@ apiClient.interceptors.request.use(config => {
     config.headers['Authorization'] = `Bearer ${token}`;
   }
   return config;
-}, (error: Error) => {
+}, (error) => {
     return Promise.reject(error);
   }
 )
+apiClient.interceptors.response.use((response) => {
+  return response;
+}, (error) => {
+  // 網路錯誤
+  if(error.code === 'ERR_NETWORK' || !error.response) {
+    return Promise.reject({
+      // 模仿後端錯誤回應的結構
+      isNetworkError: true, 
+      status: null,
+      data: null,
+      response: {
+        data: {
+          code: 500,
+          message: '無法連接到伺服器，請檢查您的網絡連線或稍後再試。'
+        }
+      }
+    });
+  }
+  return Promise.reject(error);
+})
 export const api = async (url: string, method: string, data: any = null, header: any = {}, config: object = {}, timeout: number = 10000) => {
   try {
     const res = await apiClient({

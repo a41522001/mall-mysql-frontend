@@ -1,5 +1,5 @@
-import type { ResponseProduct, ResponseUserInfo, ResponseCart, ResponseType, ResponseSignOrderDetail, ResponseLogin, ResponseSystem, ResponseAllOrder, ResponseCancelOrder } from '@/types/response';
-import type { RequestDeleteCart, RequestProduct, RequestUpdateCartQuantity, RequestAddOrder, RequestSingleOrder, RequestCheckout, RequestSignup, RequestLogin, RequestAddProduct } from '@/types/request';
+import type { ResponseProduct, ResponseUserInfo, ResponseCart, ResponseType, ResponseSignOrderDetail, ResponseLogin, ResponseSystem, ResponseAllOrder, ResponseCancelOrder, ResponseSellProduct } from '@/types/response';
+import type { RequestDeleteCart, RequestProduct, RequestUpdateCartQuantity, RequestAddOrder, RequestSingleOrder, RequestCheckout, RequestSignup, RequestLogin, RequestAddProduct, RequestChangeProductIsActive, RequestChartData } from '@/types/request';
 import { Response } from './res';  
 // 註冊
 export const apiSignup = async (signupData: RequestSignup): Promise<ResponseType<null>> => {
@@ -67,7 +67,16 @@ export const apiGetProduct = async (): Promise<ResponseProduct> => {
 // 取得賣家商品
 export const apiGetSellProduct = async (userId: string) => {
   try {
-    const res = await Response.SendResponse<ResponseProduct>(`sell/getProduct?userId=${userId}`, 'get');
+    const res = await Response.SendResponse<ResponseSellProduct>(`sell/getProduct?userId=${userId}`, 'get');
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// 更改商品上下架狀態
+export const apiChangeProductIsActive = async (data: RequestChangeProductIsActive): Promise<ResponseType<string>> => {
+  try {
+    const res = await Response.SendResponse<ResponseType<string>>('sell/changeProductIsActive', 'post', data);
     return res;
   } catch (error) {
     throw error;
@@ -148,6 +157,25 @@ export const apiCancelOrder = async (orderId: {orderId: string}): Promise<Respon
 export const apiCheckout = async (checkoutData: RequestCheckout): Promise<ResponseType<string>> => {
   try {
     const res = await Response.SendResponse<ResponseType<string>>('checkout/checkout', 'post', checkoutData);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// chart
+// 取得chart的日期區間
+export const apiChartDateItem = async (period: string): Promise<ResponseType<string[]>> => {
+  try {
+    const res = await Response.SendResponse<ResponseType<string[]>>(`sell/getDateItem?period=${period}`, 'get');
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// 取得chart的數據資料
+export const apiChartData = async (data: RequestChartData): Promise<ResponseType<number[]>> => {
+  try {
+    const res = await Response.SendResponse<ResponseType<number[]>>('sell/getSumData', 'post', data);
     return res;
   } catch (error) {
     throw error;

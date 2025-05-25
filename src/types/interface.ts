@@ -15,6 +15,7 @@ export interface Product {
   quantity: number;
   image: string;
   sellUserId: string;
+  isActive: 0 | 1;
 }
 export interface UserInfo {
   id: string;
@@ -69,4 +70,8 @@ export interface AddProductDataForm {
   productName: null | string;
   productPrice: null | string;
   quantity: null | string;
-} 
+}
+export interface SellProduct extends Product {
+  count: number;
+}
+export type Period = 'month' | 'season' | 'halfYear' | 'year';

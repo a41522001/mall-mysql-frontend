@@ -1,4 +1,4 @@
-import type { Product, UserInfo, Cart, OrderDetail, System, AllOrder } from './interface';
+import type { Product, UserInfo, Cart, OrderDetail, System, AllOrder, SellProduct } from './interface';
 export interface ResponseType<T> {
   code: number;
   data: T;
@@ -15,3 +15,4 @@ export interface ResponseCart extends ResponseType<Cart[]> {};
 export interface ResponseSignOrderDetail extends ResponseType<OrderDetail> {};
 export interface ResponseAllOrder extends ResponseType<AllOrder[]> {};
 export interface ResponseCancelOrder extends ResponseType<string> {};
+export interface ResponseSellProduct extends ResponseType<SellProduct[]> {};
