@@ -15,17 +15,12 @@ export interface RequestSignup extends RequestLogin {
 export interface RequestProduct {
   productId: string;
   quantity: number;
-  userId: string;
 }
 export interface RequestDeleteCart {
   productID: string;
   userID: string;
 }
-export interface RequestUpdateCartQuantity {
-  productID: string;
-  quantity: number;
-  userID: string;
-}
+export interface RequestUpdateCartQuantity extends RequestProduct {}
 export interface RequestAddOrder {
   cartList: CartList[];
   total: number;
@@ -37,6 +32,8 @@ export interface RequestSingleOrder {
 }
 export interface RequestCheckout extends OrderDetail {
   address: string;
+  phone: string;
+  receiverName: string;
 }
 export interface RequestAddProduct {
   userId: string;
@@ -53,3 +50,7 @@ export interface RequestChartData {
   userId: string,
   period: Period
 }
+export interface RequestSellDeliver {
+  orderId: string;
+}
+export interface RequestSellCancelOrder extends RequestSellDeliver {};

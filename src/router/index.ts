@@ -64,8 +64,8 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'overview',
-        component: defineAsyncComponent(() => import('@/pages/seller/Overview.vue'))
+        name: 'productManage',
+        component: defineAsyncComponent(() => import('@/pages/seller/ProductManage.vue'))
       },
       {
         path: 'analysis',
@@ -73,9 +73,14 @@ const routes = [
         component: defineAsyncComponent(() => import('@/pages/seller/Analysis.vue'))
       },
       {
-        path: 'productManage',
-        name: 'productManage',
-        component: defineAsyncComponent(() => import('@/pages/seller/ProductManage.vue'))
+        path: 'orderManage',
+        name: 'orderManage',
+        component: defineAsyncComponent(() => import('@/pages/seller/OrderManage.vue'))
+      },
+      {
+        path: 'orderDetail/:orderId',
+        name: 'orderDetail',
+        component: defineAsyncComponent(() => import('@/pages/seller/OrderDetail.vue'))
       }
     ]
   }

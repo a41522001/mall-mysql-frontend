@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white pa-3">
+  <div class="bg-white pa-3" id="cart">
     <v-row>
       <v-checkbox v-model="isAllCheck" label="全選" density="compact"/>
     </v-row>
@@ -106,15 +106,14 @@
   const inputFlag = shallowRef<boolean>(false);
 
   // 確認庫存(如果足夠則更新購物車數量)
-  const handleCheckStock = async (productID: string, quantity: number): Promise<void> => {
+  const handleCheckStock = async (productId: string, quantity: number): Promise<void> => {
     if(quantity === 0) {
-      openDeleteCartDialog(productID, true);
+      openDeleteCartDialog(productId, true);
       return;
     }
     const data = {
-      productID,
-      quantity,
-      userID: userId
+      productId,
+      quantity
     }
     try {
       await apiUpdateCartQuantity(data);
@@ -122,7 +121,7 @@
       sysStore.openDialog(error.message);
       const stock = error.message.split(' ')[1];
       nextTick(() => {
-        quantities[productID] = +stock;
+        quantities[productId] = +stock;
       })
     }
   }
@@ -141,11 +140,7 @@
   }
   // 刪除購物車
   const deleteCart = async (): Promise<void> => {
-    const data = {
-      productID: productId.value,
-      userID: userId
-    }
-    const res = await apiDeleteCart(data);
+    const res = await apiDeleteCart(productId.value);
     dialog.deleteCart = false;
     sysStore.openDialog(res.message);
     cartStore.getCartList();
@@ -221,6 +216,11 @@
   })
 </script>
 <style scoped lang="scss">
+#cart {
+  max-width: 768px;
+  width: 100%;
+  margin: auto;
+}
 .image_container {
   height: 20rem;
 }

@@ -2,6 +2,7 @@ import { api } from "@/utils/api";
 import { useSysStore } from '@/stores/sysStore';
 import type { CustomError } from '@/types/error';
 import type { ResponseType } from '@/types/response';
+import type { HttpMethod } from "@/types/interface";
 // error物件結構
 // {
 //   code: number;
@@ -11,7 +12,7 @@ import type { ResponseType } from '@/types/response';
 // }
 export class Response {
   // common
-  static async SendResponse<T>(url: string, method: string, data?: any, header?: any, isReturnErrorResponse: boolean = false): Promise<T> {
+  static async SendResponse<T>(url: string, method: HttpMethod, data?: any, header?: any, isReturnErrorResponse: boolean = false): Promise<T> {
     const sysStore = useSysStore();
     try {
       sysStore.setLoading(true);
@@ -31,7 +32,7 @@ export class Response {
     }
   }
   // 金流專用
-  static async SendPaymentResponse(url: string, method: string, data?: any, header?: any): Promise<any> {
+  static async SendPaymentResponse(url: string, method: HttpMethod, data?: any, header?: any): Promise<any> {
     try {
       const res = await api(url, method, data, header);
       if(res?.data.code === 100) {
@@ -44,7 +45,7 @@ export class Response {
     }
   }
   // FormData專用
-  static async SendFormDataResponse<T>(url: string, method: string, formData: any, header: any, config: object): Promise<T> {
+  static async SendFormDataResponse<T>(url: string, method: HttpMethod, formData: any, header: any, config: object): Promise<T> {
     try {
       const res = await api(url, method, formData, header, config, 20000);
       return res.data;

@@ -6,21 +6,14 @@
         {{ title }}
       </v-tab>
     </v-tabs>
-    <template v-if="productList.length">
-      <v-tabs-window v-model="tab">
-        <v-tabs-window-item v-for="{ title, value, component } in tabList">
-          <div class="py-3">
-            <component :is="component" :productList="productList" 
-              @changeIsActive="handleChangeActive"/>
-          </div>
-        </v-tabs-window-item>
-      </v-tabs-window>
-    </template>
-    <template v-else>
-      <div class="align-self-center pt-10 text-h4">
-        還沒有商品嗎? 趕快去新增吧!
-      </div>
-    </template>
+    <v-tabs-window v-model="tab">
+      <v-tabs-window-item v-for="{ title, value, component } in tabList">
+        <div class="py-3">
+          <component :is="component" :productList="productList" 
+            @changeIsActive="handleChangeActive"/>
+        </div>
+      </v-tabs-window-item>
+    </v-tabs-window>
   </div>
 </template>
 

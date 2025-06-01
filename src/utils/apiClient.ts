@@ -1,10 +1,10 @@
-import type { ResponseProduct, ResponseUserInfo, ResponseCart, ResponseType, ResponseSignOrderDetail, ResponseLogin, ResponseSystem, ResponseAllOrder, ResponseCancelOrder, ResponseSellProduct } from '@/types/response';
-import type { RequestDeleteCart, RequestProduct, RequestUpdateCartQuantity, RequestAddOrder, RequestSingleOrder, RequestCheckout, RequestSignup, RequestLogin, RequestAddProduct, RequestChangeProductIsActive, RequestChartData } from '@/types/request';
+import type { ResponseProduct, ResponseUserInfo, ResponseCart, ResponseType, ResponseSignOrderDetail, ResponseLogin, ResponseSystem, ResponseAllOrder, ResponseCancelOrder, ResponseSellProduct, ResponseSellCount, ResponseSellOrder, ResponseSellOrderDetail } from '@/types/response';
+import type { RequestDeleteCart, RequestProduct, RequestUpdateCartQuantity, RequestAddOrder, RequestSingleOrder, RequestCheckout, RequestSignup, RequestLogin, RequestAddProduct, RequestChangeProductIsActive, RequestChartData, RequestSellDeliver, RequestSellCancelOrder } from '@/types/request';
 import { Response } from './res';  
 // 註冊
 export const apiSignup = async (signupData: RequestSignup): Promise<ResponseType<null>> => {
   try {
-    const res = await Response.SendResponse<ResponseType<null>>('auth/signup', 'post', signupData);
+    const res = await Response.SendResponse<ResponseType<null>>('api/auth/signup', 'post', signupData);
     return res;
   } catch (error) {
     throw error;
@@ -13,7 +13,7 @@ export const apiSignup = async (signupData: RequestSignup): Promise<ResponseType
 // 登入
 export const apiLogin = async (loginData: RequestLogin): Promise<ResponseLogin> => {
   try {
-    const res = await Response.SendResponse<ResponseLogin>('auth/login', 'post', loginData);
+    const res = await Response.SendResponse<ResponseLogin>('api/auth/login', 'post', loginData);
     return res
   } catch (error) {
     throw error;
@@ -22,7 +22,7 @@ export const apiLogin = async (loginData: RequestLogin): Promise<ResponseLogin> 
 // 取得UserInfo
 export const apiGetUserInfo = async (): Promise<ResponseUserInfo> => {
   try {
-    const res = await Response.SendResponse<ResponseUserInfo>('auth/userInfo', 'get', {}, undefined, true);
+    const res = await Response.SendResponse<ResponseUserInfo>('api/auth/userInfo', 'get', {}, undefined, true);
     return res;
   } catch (error) {
     throw error;
@@ -40,7 +40,7 @@ export const apiGetSystemSetting = async (sysNo: string): Promise<ResponseSystem
 // 新增商品
 export const apiAddProduct = async (data: RequestAddProduct): Promise<ResponseType<string>> => {
   try {
-    const res = await Response.SendResponse<ResponseType<string>>('sell/addProduct', 'post', data);
+    const res = await Response.SendResponse<ResponseType<string>>('api/sell/addProduct', 'post', data);
     return res;
   } catch (error) {
     throw error;
@@ -49,7 +49,7 @@ export const apiAddProduct = async (data: RequestAddProduct): Promise<ResponseTy
 // 上傳商品圖片
 export const apiUploadProductImg = async (formdata: FormData, config: object): Promise<ResponseType<string>> => {
   try {
-    const res = await Response.SendFormDataResponse<ResponseType<string>>('sell/addProductImage', 'post', formdata, {'Content-Type': 'multipart/form-data' }, config);
+    const res = await Response.SendFormDataResponse<ResponseType<string>>('api/sell/addProductImage', 'post', formdata, {'Content-Type': 'multipart/form-data' }, config);
     return res;
   } catch (error) {
     throw error;
@@ -58,7 +58,7 @@ export const apiUploadProductImg = async (formdata: FormData, config: object): P
 // 取得商品
 export const apiGetProduct = async (): Promise<ResponseProduct> => {
   try {
-    const res = await Response.SendResponse<ResponseProduct>('product/getProduct', 'get');
+    const res = await Response.SendResponse<ResponseProduct>('api/product', 'get');
     return res;
   } catch (error) {
     throw error;
@@ -67,7 +67,7 @@ export const apiGetProduct = async (): Promise<ResponseProduct> => {
 // 取得賣家商品
 export const apiGetSellProduct = async (userId: string) => {
   try {
-    const res = await Response.SendResponse<ResponseSellProduct>(`sell/getProduct?userId=${userId}`, 'get');
+    const res = await Response.SendResponse<ResponseSellProduct>(`api/sell/product?userId=${userId}`, 'get');
     return res;
   } catch (error) {
     throw error;
@@ -76,7 +76,16 @@ export const apiGetSellProduct = async (userId: string) => {
 // 更改商品上下架狀態
 export const apiChangeProductIsActive = async (data: RequestChangeProductIsActive): Promise<ResponseType<string>> => {
   try {
-    const res = await Response.SendResponse<ResponseType<string>>('sell/changeProductIsActive', 'post', data);
+    const res = await Response.SendResponse<ResponseType<string>>('api/sell/changeProductIsActive', 'patch', data);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// 取得購物車列表
+export const apiGetCartList = async (): Promise<ResponseCart> => {
+  try {
+    const res = await Response.SendResponse<ResponseCart>('api/cart', 'get');
     return res;
   } catch (error) {
     throw error;
@@ -85,24 +94,15 @@ export const apiChangeProductIsActive = async (data: RequestChangeProductIsActiv
 // 新增購物車
 export const apiAddCart = async (product: RequestProduct): Promise<void> => {
   try {
-    await Response.SendResponse('cart/addCart', 'post', product);
-  } catch (error) {
-    throw error;
-  }
-}
-// 取得購物車列表
-export const apiGetCartList = async (userId: string): Promise<ResponseCart> => {
-  try {
-    const res = await Response.SendResponse<ResponseCart>(`cart/getCart?userID=${userId}`, 'get');
-    return res;
+    await Response.SendResponse('api/cart', 'post', product);
   } catch (error) {
     throw error;
   }
 }
 // 刪除購物車
-export const apiDeleteCart = async (deleteData: RequestDeleteCart): Promise<ResponseType<null>> => {
+export const apiDeleteCart = async (productId: string): Promise<ResponseType<null>> => {
   try {
-    const res = await Response.SendResponse<ResponseType<null>>('cart/deleteCart', 'post', deleteData);
+    const res = await Response.SendResponse<ResponseType<null>>(`api/cart?productID=${productId}`, 'delete');
     return res;
   } catch (error) {
     throw error;
@@ -111,7 +111,7 @@ export const apiDeleteCart = async (deleteData: RequestDeleteCart): Promise<Resp
 // 更改購物車數量
 export const apiUpdateCartQuantity = async (updateQuantityData: RequestUpdateCartQuantity): Promise<ResponseType<null>> => {
   try {
-    const res = await Response.SendResponse<ResponseType<null>>('cart/changeCartQuantity', 'post', updateQuantityData, undefined, true);
+    const res = await Response.SendResponse<ResponseType<null>>('api/cart', 'patch', updateQuantityData, undefined, true);
     return res;
   } catch (error) {
     throw error;
@@ -144,7 +144,7 @@ export const apiGetOrder = async (userId: string): Promise<ResponseAllOrder> => 
     throw error;
   }
 }
-// 取消訂單
+// 買家取消訂單
 export const apiCancelOrder = async (orderId: {orderId: string}): Promise<ResponseCancelOrder> => {
   try {
     const res = await Response.SendResponse<ResponseCancelOrder>('order/cancelOrder', 'post', orderId);
@@ -156,7 +156,7 @@ export const apiCancelOrder = async (orderId: {orderId: string}): Promise<Respon
 // 結帳
 export const apiCheckout = async (checkoutData: RequestCheckout): Promise<ResponseType<string>> => {
   try {
-    const res = await Response.SendResponse<ResponseType<string>>('checkout/checkout', 'post', checkoutData);
+    const res = await Response.SendResponse<ResponseType<string>>('api/checkout/checkout', 'post', checkoutData);
     return res;
   } catch (error) {
     throw error;
@@ -166,7 +166,7 @@ export const apiCheckout = async (checkoutData: RequestCheckout): Promise<Respon
 // 取得chart的日期區間
 export const apiChartDateItem = async (period: string): Promise<ResponseType<string[]>> => {
   try {
-    const res = await Response.SendResponse<ResponseType<string[]>>(`sell/getDateItem?period=${period}`, 'get');
+    const res = await Response.SendResponse<ResponseType<string[]>>(`api/sell/getDateItem?period=${period}`, 'get');
     return res;
   } catch (error) {
     throw error;
@@ -175,9 +175,55 @@ export const apiChartDateItem = async (period: string): Promise<ResponseType<str
 // 取得chart的數據資料
 export const apiChartData = async (data: RequestChartData): Promise<ResponseType<number[]>> => {
   try {
-    const res = await Response.SendResponse<ResponseType<number[]>>('sell/getSumData', 'post', data);
+    const res = await Response.SendResponse<ResponseType<number[]>>('api/sell/getSumData', 'post', data);
     return res;
   } catch (error) {
     throw error;
   }
 }
+// 取得本月銷售數量排行
+export const apiGetSellCount = async (userId: string): Promise<ResponseSellCount> => {
+  try {
+    const res = await Response.SendResponse<ResponseSellCount>(`api/sell/getSellCount?userId=${userId}`, 'get');
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// 取得賣家訂單
+export const apiGetSellOrders = async (): Promise<ResponseSellOrder> => {
+  try {
+    const res = await Response.SendResponse<ResponseSellOrder>('api/sell/getSellOrders', 'get');
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// 取得賣家訂單詳細資訊
+export const apiSellOrderDetail = async (orderId: string): Promise<ResponseSellOrderDetail> => {
+  try {
+    const res = await Response.SendResponse<ResponseSellOrderDetail>(`api/sell/orderDetail?orderId=${orderId}`, 'get');
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// 賣家出貨
+export const apiSellDeliver = async (data: RequestSellDeliver): Promise<ResponseType<null>> => {
+  try {
+    const res = await Response.SendResponse<ResponseType<null>>('api/sell/deliver', 'patch', data, undefined, true);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+// 賣家取消訂單
+export const apiSellCancelOrder = async (data: RequestSellCancelOrder) => {
+  try {
+    const res = await Response.SendResponse<ResponseType<null>>('api/sell/cancelOrder', 'post', data, undefined, true);
+    return res;
+  } catch (error) {
+    throw error;
+  }
+}
+

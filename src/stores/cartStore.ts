@@ -11,9 +11,8 @@ export const useCartStore = defineStore('cartStore', () => {
   const cartList: Cart[] = reactive([]);
   const cartListLength = computed((): number => cartList.length);
   // 取得cartList
-  const getCartList = async (userId?: string) => {
-    const userID = userId ?? userStore.userInfo.id;
-    const res = await apiGetCartList(userID);
+  const getCartList = async () => {
+    const res = await apiGetCartList();
     cartList.splice(0, cartList.length, ...res.data);
   }
   return {

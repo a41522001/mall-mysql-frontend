@@ -19,15 +19,15 @@
     <v-list>
       <v-list-item @click="router.push('/buyer/')" title="商品列表" prepend-icon="mdi-cart-outline" />
       <v-list-item @click="router.push('/buyer/order')" title="我的訂單" prepend-icon="mdi-list-box-outline" />
-      <v-list-item @click="router.push('/seller/')" title="我是賣家" prepend-icon="mdi-logout" />
+      <v-list-item @click="router.push('/seller/')" title="我是賣家" prepend-icon="mdi-store" />
       <v-list-item @click="dialog.logout = true" title="登出" prepend-icon="mdi-logout" />
     </v-list>
   </v-navigation-drawer>
   <v-main>
     <v-container>
-      <template v-if="isUserInfoReady">
+      <div v-if="isUserInfoReady" id="main_container">
         <router-view :searchString="searchString" />
-      </template>
+      </div>
     </v-container>
   </v-main>
   <Loading />

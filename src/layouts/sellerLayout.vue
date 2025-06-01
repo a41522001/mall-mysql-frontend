@@ -7,18 +7,18 @@
   <v-navigation-drawer v-model="drawer" temporary app
     :location="$vuetify.display.mobile ? 'bottom' : 'left'">
     <v-list>
-      <v-list-item @click="router.push('/seller/')" title="總覽" prepend-icon="mdi-logout" />
-      <v-list-item @click="router.push('/seller/analysis')" title="銷售分析" prepend-icon="mdi-logout" />
-      <v-list-item @click="router.push('/seller/productManage')" title="商品管理" prepend-icon="mdi-logout" />
-      <v-list-item @click="router.push('/buyer/')" title="我是買家" prepend-icon="mdi-logout" />
+      <v-list-item @click="router.push('/seller/')" title="商品管理" prepend-icon="mdi-briefcase" />
+      <v-list-item @click="router.push('/seller/orderManage')" title="訂單管理" prepend-icon="mdi-list-box-outline" />
+      <v-list-item @click="router.push('/seller/analysis')" title="銷售分析" prepend-icon="mdi-chart-areaspline-variant" />
+      <v-list-item @click="router.push('/buyer/')" title="我是買家" prepend-icon="mdi-store" />
       <v-list-item @click="dialog.logout = true" title="登出" prepend-icon="mdi-logout" />
     </v-list>
   </v-navigation-drawer>
   <v-main>
     <v-container>
-      <template v-if="isUserInfoReady">
+      <div v-if="isUserInfoReady" id="main_container">
         <router-view />
-      </template>
+      </div>
     </v-container>
   </v-main>
   <Loading />
@@ -72,3 +72,6 @@
     await getUserInfo();
   })
 </script>
+<style scoped lang="scss">
+
+</style>

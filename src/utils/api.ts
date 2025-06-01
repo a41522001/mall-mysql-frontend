@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import type { HttpMethod } from '@/types/interface';
 const urlRes = await axios.get(import.meta.env.VITE_CONFIG_PATH);
 const { apiBaseUrl } = urlRes.data;
 const apiClient = axios.create({
@@ -36,7 +37,7 @@ apiClient.interceptors.response.use((response) => {
   }
   return Promise.reject(error);
 })
-export const api = async (url: string, method: string, data: any = null, header: any = {}, config: object = {}, timeout: number = 10000) => {
+export const api = async (url: string, method: HttpMethod, data: any = {}, header: any = {}, config: object = {}, timeout: number = 10000) => {
   try {
     const res = await apiClient({
       url,

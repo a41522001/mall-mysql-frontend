@@ -1,68 +1,70 @@
 <template>
-  <h2 class="mb-6">所有訂單</h2>
-  <!-- 篩選 -->
-  <v-card class="mb-5">
-    <v-card-text>
-      <v-row class="align-end">
-        <v-col cols="12" sm="6" md="3">
-          <div class="mb-1">訂單狀態</div>
-          <v-select v-model="query.status" :items="statusItems" hide-details density="compact" />
-        </v-col>
-        <v-col cols="12" sm="6" md="3">
-          <div class="mb-1">下單日期</div>
-          <v-date-input v-model="query.date" prepend-icon="" prepend-inner-icon="$calendar"
-            hide-details density="compact" clearable/>
-        </v-col>
-        <v-col cols="12" sm="6" md="3">
-          <div class="mb-1">搜尋訂單</div>
-          <v-text-field v-model="query.orderNo" hide-details density="compact" 
-            placeholder="訂單編號..." clearable />
-        </v-col>
-        <v-col cols="12" sm="6" md="3">
-          <v-btn @click="handleSearch">套用篩選</v-btn>
-        </v-col>
-      </v-row>
-    </v-card-text>
-  </v-card>
-  <!-- 訂單呈現 -->
-  <template v-if="orderListView.length">
-    <v-card v-for="{ orderId, totalPrice, status, createdDate, product } in orderListView" :key="orderId" class="mb-5">
+  <div>
+    <h2 class="mb-6">所有訂單</h2>
+    <!-- 篩選 -->
+    <v-card class="mb-5">
       <v-card-text>
-        <div class="d-flex justify-space-between">
-          <div>
-            <div class="order_no">#{{ orderId }}</div>
-            <div class="order_date">下單日期：{{ renderCreatedDate(createdDate) }}</div>
-          </div>
-          <v-chip :color="statusMap[status].color" class="flex-shrink-0">{{ statusMap[status].text }}</v-chip>
-        </div>
-        <v-divider class="my-4" />
-        <div>
-          <div class="order_consumer">顧客資訊：</div>
-          <div class="order_consumer_info">{{ name }} ({{ email }})</div>
-        </div>
-        <v-divider class="my-4" />
-        <div>
-          <div class="order_consumer">商品摘要：</div>
-          <template v-for="({ productName, quantity }, index) in product" :key="index">
-            <div class="order_consumer_info mb-1">{{ productName }} x{{ quantity }}</div>
-          </template>
-        </div>
-        <div class="order_amount_container">
-          <div>
-            <span class="order_amount_title">總金額：</span>
-            <span class="order_amount">NT$ {{ totalPrice }}</span>
-          </div>
-          <div class="d-flex ga-3">
-            <v-btn v-if="status !== 'cancel'" @click="handleCancelOrder(orderId)">取消訂單</v-btn>
-          </div>
-        </div>
+        <v-row class="align-end">
+          <v-col cols="12" sm="6" md="3">
+            <div class="mb-1">訂單狀態</div>
+            <v-select v-model="query.status" :items="statusItems" hide-details density="compact" />
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <div class="mb-1">下單日期</div>
+            <v-date-input v-model="query.date" prepend-icon="" prepend-inner-icon="$calendar"
+              hide-details density="compact" clearable/>
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <div class="mb-1">搜尋訂單</div>
+            <v-text-field v-model="query.orderNo" hide-details density="compact" 
+              placeholder="訂單編號..." clearable />
+          </v-col>
+          <v-col cols="12" sm="6" md="3">
+            <v-btn @click="handleSearch">套用篩選</v-btn>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
-    <Pagination v-model="currentPage" :totalItems="orderList.length" />
-  </template>
-  <template v-else>
-    <div>查無資料</div>
-  </template>
+    <!-- 訂單呈現 -->
+    <template v-if="orderListView.length">
+      <v-card v-for="{ orderId, totalPrice, status, createdDate, product } in orderListView" :key="orderId" class="mb-5">
+        <v-card-text>
+          <div class="d-flex justify-space-between">
+            <div>
+              <div class="order_no">#{{ orderId }}</div>
+              <div class="order_date">下單日期：{{ renderCreatedDate(createdDate) }}</div>
+            </div>
+            <v-chip :color="statusMap[status].color" class="flex-shrink-0">{{ statusMap[status].text }}</v-chip>
+          </div>
+          <v-divider class="my-4" />
+          <div>
+            <div class="order_consumer">顧客資訊：</div>
+            <div class="order_consumer_info">{{ name }} ({{ email }})</div>
+          </div>
+          <v-divider class="my-4" />
+          <div>
+            <div class="order_consumer">商品摘要：</div>
+            <template v-for="({ productName, quantity }, index) in product" :key="index">
+              <div class="order_consumer_info mb-1">{{ productName }} x{{ quantity }}</div>
+            </template>
+          </div>
+          <div class="order_amount_container">
+            <div>
+              <span class="order_amount_title">總金額：</span>
+              <span class="order_amount">NT$ {{ totalPrice }}</span>
+            </div>
+            <div class="d-flex ga-3">
+              <v-btn v-if="status !== 'cancel'" @click="handleCancelOrder(orderId)">取消訂單</v-btn>
+            </div>
+          </div>
+        </v-card-text>
+      </v-card>
+      <Pagination v-model="currentPage" :totalItems="orderList.length" />
+    </template>
+    <template v-else>
+      <div>查無資料</div>
+    </template>
+  </div>
 </template>
 
 <script setup lang="ts">

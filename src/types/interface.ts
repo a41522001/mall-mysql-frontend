@@ -1,4 +1,5 @@
 import { type Component } from 'vue';
+export type HttpMethod = 'get' | 'post' | 'delete' | 'patch' | 'put';
 export interface SignupDataForm {
   name: string;
   email: string;
@@ -58,7 +59,7 @@ export interface OrderQuery {
   date: string;
   orderNo: string;
 }
-export type Status = 'cancel' | 'paying' | 'paid';
+export type Status = 'cancel' | 'paying' | 'paid' | 'deliver' | 'delivered' | 'finish';
 export interface AllOrder {
   orderId: string;
   totalPrice: number;
@@ -75,3 +76,32 @@ export interface SellProduct extends Product {
   count: number;
 }
 export type Period = 'month' | 'season' | 'halfYear' | 'year';
+export interface SellCount {
+  name: string;
+  count: number;
+}
+export interface SellOrder {
+  orderNo: string;
+  date: string;
+  total: number;
+  status: Status;
+  custom: number;
+}
+export interface SellOrderDetail {
+  total: number;
+  receiverName: string;
+  email: string;
+  address: string;
+  phone: string;
+  status: Status;
+  orderId: string;
+  userName: string;
+  createdDate: string;
+  createdTime: string;
+  products: {
+    image: string;
+    productName: string;
+    price: number;
+    quantity: number;
+  }[];
+}

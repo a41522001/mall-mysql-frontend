@@ -1,4 +1,5 @@
 <template>
+  {{ phoneDetail }}
   <v-card class="mx-auto" width="100%" max-width="600px">
     <v-card class="mb-6">
       <v-toolbar flat color="primary" dark>
@@ -25,27 +26,45 @@
       <v-divider />
     </template>
     <div>
-    <v-card class="mb-6">
+    <v-card variant="flat">
+      <v-card-title class="bg-primary">
+        <h3 class="subtitle-1">收件者資訊</h3>
+      </v-card-title>
+      <v-card-text class="pt-5">
+        <v-form ref="formReceiver">
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-text-field v-model="receiverInfo.name" :rules="rulesReceiver.name" label="姓名" hint="請填寫全名" density="compact" variant="outlined" />
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field v-model="receiverInfo.phone" :rules="rulesReceiver.phone" label="連絡電話" hint="請填寫手機或市話(加區碼)" density="compact" variant="outlined" />
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-card-text>
+    </v-card>
+    <v-card variant="flat">
       <v-card-title class="bg-primary">
         <h3 class="subtitle-1">寄送地址</h3>
       </v-card-title>
       <v-card-text class="pt-5">
-        <v-form ref="form">
+        <v-form ref="formAddress">
           <v-row>
             <v-col cols="6">
-              <v-select v-model="formData.city" :rules="rules.city" :items="cityList" label="縣市" density="compact" variant="outlined"/>
+              <v-select v-model="receiveAddress.city" :rules="rulesAddress.city" :items="cityList" label="縣市" density="compact" variant="outlined"/>
             </v-col>
             <v-col cols="6">
-              <v-select v-model="formData.area" :rules="rules.area" :items="areaList" label="區域" density="compact" variant="outlined" no-data-text="請先選擇縣市"/>
+              <v-select v-model="receiveAddress.area" :rules="rulesAddress.area" :items="areaList" label="區域" density="compact" variant="outlined" no-data-text="請先選擇縣市"/>
             </v-col>
             <v-col cols="12">
-              <v-text-field v-model="formData.detailAddress" :rules="rules.detailAddress" label="詳細地址" density="compact" variant="outlined" />
+              <v-text-field v-model="receiveAddress.detailAddress" :rules="rulesAddress.detailAddress" label="詳細地址" density="compact" variant="outlined" />
             </v-col>
           </v-row>
         </v-form>
       </v-card-text>
     </v-card>
     </div>
+    <v-divider :thickness="2" />
     <div class="pa-3 text-end">
       <v-btn @click="handlePayment">付款</v-btn>
     </div>
@@ -64,7 +83,9 @@
   import addressJSON from '@/../public/address.json';
   import { apiCheckout, apiGetSingleOrderDetail } from '@/utils/apiClient';
   import { VForm } from 'vuetify/components';
-  
+  defineOptions({
+    inheritAttrs: false
+  })
   const addressData = addressJSON as Record<string, string[]>;
   const { name } = useDisplay()
   const userStore = useUserStore();
@@ -74,7 +95,8 @@
   const route = useRoute();
   const userInfo = inject<UserInfo>('userInfo')!;
   const { id: userId } = userInfo;
-  const form = ref<InstanceType<typeof VForm> | null>(null);
+  const formReceiver = ref<InstanceType<typeof VForm> | null>(null);
+  const formAddress = ref<InstanceType<typeof VForm> | null>(null);
   const productList = computed((): OrderProduct[] => orderDetail.products);
   const orderDetail: OrderDetail = reactive({
     email: '',
@@ -84,12 +106,26 @@
     total: 0,
     userID: ''
   });
-  const formData = reactive({
+  const receiverInfo = reactive({
+    name: '',
+    phone: ''
+  })
+  const receiveAddress = reactive({
     city: '',
     area: '',
     detailAddress: ''
   })
-  const rules = {
+  const validatePhoneRegex = /^0\d{8,9}$/;
+  const rulesReceiver = {
+    name: [
+      (v: string) => !!v || '請填寫全名'
+    ],
+    phone: [
+      (v: string) => !!v || '請填寫電話號碼',
+      (v: string) => validatePhoneRegex.test(v) || '錯誤的號碼'
+    ]
+  }
+  const rulesAddress = {
     city: [
       (v: string) => !!v || '請選擇縣市'
     ],
@@ -101,13 +137,23 @@
     ]
   }
   const cityList = computed(() => Object.keys(addressJSON));
-  const areaList = computed(() => addressData[formData.city] ?? []);
+  const areaList = computed(() => addressData[receiveAddress.city] ?? []);
+  const phoneDetail = computed(() => {
+    const isCellphone = receiverInfo.phone.startsWith('09') && receiverInfo.phone.length === 10;
+    if(isCellphone) {
+      const header = receiverInfo.phone.slice(0, 4);
+      const middle = receiverInfo.phone.slice(4, 7);
+      const footer = receiverInfo.phone.slice(7, receiverInfo.phone.length);
+      return `${header}-${middle}-${footer}`;
+    }
+    return receiverInfo.phone;
+  })
   const addressDetail = computed(() => {
-    const { city, area, detailAddress } = formData;
+    const { city, area, detailAddress } = receiveAddress;
     return `${city}${area}${detailAddress}`;
   })
-  watch(() => formData.city, () => {
-    formData.area ='';
+  watch(() => receiveAddress.city, () => {
+    receiveAddress.area = '';
   })
 
   const getOrderDetail = async () => {
@@ -119,16 +165,25 @@
     const res = await apiGetSingleOrderDetail(data);
     Object.assign(orderDetail, res.data);
   }
-  const handleValidate = async (): Promise<boolean | null | undefined> => {
-    const result = await form.value?.validate();
+  const handleValidateReceiver = async (): Promise<boolean | null | undefined> => {
+    const result = await formReceiver.value?.validate();
+    return result?.valid;
+  }
+  const handleValidateAddress = async (): Promise<boolean | null | undefined> => {
+    const result = await formAddress.value?.validate();
     return result?.valid;
   }
   const handlePayment = async () => {
-    if(!await handleValidate()) {
+    const validateResult = await Promise.all([handleValidateReceiver(), handleValidateAddress()]);
+    console.log(validateResult);
+    const isCorrect = validateResult.every(item => item);
+    if(!isCorrect) {
       return;
     }
     const data = {
       address: addressDetail.value,
+      phone: phoneDetail.value,
+      receiverName: receiverInfo.name,
       ...orderDetail
     }
     try {

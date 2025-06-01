@@ -3,7 +3,7 @@
     <Carousels />
   </div>
   <v-row>
-    <v-col v-for="{ id, name, price, quantity, image } in productList" :key="id" cols="12" sm="6" md="4" lg="3" >
+    <v-col v-for="{ id, name, price, quantity, image, sellUserId } in productList" :key="id" cols="12" sm="6" md="4" lg="3" >
       <v-card>
         <v-sheet width="100%" height="10rem">
           <img :src="image" class="w-100 h-100">
@@ -14,7 +14,7 @@
           <div>庫存: {{ quantity }}</div>
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="handleAddCart({id, name, price, quantity, image})" 
+          <v-btn @click="handleAddCart({id, name, price, quantity, image, sellUserId})" 
             :color="renderBtnColor(quantity)" variant="elevated" :disabled="quantity === 0">
             {{ renderBtnText(quantity) }}
           </v-btn>
@@ -77,7 +77,8 @@
     name: '',
     price: 0,
     quantity: 0,
-    image: ''
+    image: '',
+    sellUserId: ''
   });
   const productList = computed((): Product[] => {
     if(!props.searchString) return products;
@@ -122,14 +123,13 @@
     const product = {
       productId: id,
       quantity: quantity.value,
-      userId: userId
     }
     try {
       await apiAddCart(product);
       dialog.product = false;
       handleGetProduct();
       closeDialog();
-      cartStore.getCartList(userId);
+      cartStore.getCartList();
       sysStore.openDialog('成功添加購物車');
     } catch (error: any) {
       sysStore.openDialog(error.message as string);

@@ -11,6 +11,7 @@ declare module 'vue' {
     Carousels: typeof import('./components/common/Carousels.vue')['default']
     Cart: typeof import('./pages/buyer/Cart.vue')['default']
     ConfirmDialog: typeof import('./components/dialog/ConfirmDialog.vue')['default']
+    DataTable: typeof import('./components/common/DataTable.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Loading: typeof import('./components/common/Loading.vue')['default']
     Logout: typeof import('./components/dialog/LogoutDialog.vue')['default']
