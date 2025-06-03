@@ -25,7 +25,7 @@
       </v-form>
     </v-card-text>
     <v-card-actions class="d-flex justify-end">
-      <v-btn>清除</v-btn>
+      <v-btn @click="clearDataFormAndUploadFile">清除</v-btn>
       <v-btn @click="handleAddProduct">儲存商品</v-btn>
     </v-card-actions>
   </v-card>
@@ -37,9 +37,12 @@ import Upload from './Upload.vue';
 import { useSysStore } from '@/stores/sysStore';
 import { apiAddProduct } from '@/utils/apiClient';
 import type { AddProductDataForm, UserInfo } from '@/types/interface';
+
 defineOptions({
   inheritAttrs: false
 })
+
+
 const sysStore = useSysStore();
 const userInfo = inject<UserInfo>('userInfo')!;
 const { id: userId } = userInfo;
@@ -54,7 +57,7 @@ const dataForm: AddProductDataForm = reactive({
 })
 const rules = {
   productName: [
-    (v: string) => v.length >= 2 || '請輸入3個字元以上的商品名稱' 
+    (v: string) => v.length >= 1 || '請輸入商品名稱' 
   ],
   productPrice: [
     (v: string) => !!v || parseInt(v) > 0 || '請輸入正確的價錢' 
@@ -95,6 +98,7 @@ const handleAddProduct = async () => {
   sysStore.openDialog(res.data);
   clearDataFormAndUploadFile();
 }
+
 </script>
 
 <style scoped lang="scss">
@@ -109,4 +113,5 @@ const handleAddProduct = async () => {
     color: #f00;
   }
 }
+
 </style>

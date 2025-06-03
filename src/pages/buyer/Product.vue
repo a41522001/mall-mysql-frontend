@@ -5,9 +5,7 @@
   <v-row>
     <v-col v-for="{ id, name, price, quantity, image, sellUserId } in productList" :key="id" cols="12" sm="6" md="4" lg="3" >
       <v-card>
-        <v-sheet width="100%" height="10rem">
-          <img :src="image" class="w-100 h-100">
-        </v-sheet>
+        <v-img :src="image" cover/>
         <v-card-text>
           <div class="text-h4 mb-4">{{ name }}</div>
           <div>${{ price }}</div>

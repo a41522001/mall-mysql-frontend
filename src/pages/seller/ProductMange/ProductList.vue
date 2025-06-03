@@ -3,9 +3,9 @@
     <template v-if="productList.length > 0" >
       <v-row>
         <template v-for="{ id, quantity, price, name, sellUserId, image, isActive, count } in productList" :key="id">
-          <v-col sm="6" lg="4">
+          <v-col sm="6" md="4" lg="3">
             <div class="bg-white rounded-lg">
-              <v-img :src="Apple" width="100%" aspect-ratio="1/1" rounded="t-lg"/>
+              <v-img :src="image" width="100%" rounded="t-lg"/>
               <div class="pa-5">
                 <h3 class="mb-3">{{ name }}</h3>
                 <div>NT$ {{ formatNumberWithCommas(price) }}</div>

@@ -19,6 +19,16 @@
       <v-btn v-if="progress !== 0 && progress !== 100" @click="handleCancelUpload">取消</v-btn>
     </div>
   </v-card>
+    <div v-if="imageSrc" class="cropper_wrapper">
+      <Cropper
+        ref="cropper"
+        class="cropper"
+        :src="imageSrc"
+        :stencil-props="{
+          aspectRatio: 4/3
+        }"
+      />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -29,14 +39,17 @@
   import { useRouter } from 'vue-router';
   import { storeToRefs } from "pinia";
   import { apiUploadProductImg } from '@/utils/apiClient';
-  
+  import { Cropper } from 'vue-advanced-cropper'
+  import 'vue-advanced-cropper/dist/style.css';
   const router = useRouter();
   const userStore = useUserStore();
   const sysStore = useSysStore();
   const url = defineModel<string>();
   const fileCondition = ['jpg', 'png'];
   const fileInputRef = ref();
+  const cropper = ref();
   const file = ref<File | undefined>();
+  const imageSrc = ref<string | null>(null);
   const progress = ref(0); // 上傳進度百分比
   // 取消請求實例
   let controller = new AbortController();
@@ -44,7 +57,7 @@
   const handleClickInputFile = () => {
     fileInputRef.value.click();
   }
-  
+
   const handleUpdateFile = (e: File | File[]): void => {
     progress.value = 0;
     if(e === undefined) {
@@ -59,40 +72,60 @@
     const isCorrectFileFormat = fileCondition.includes(fileSubName!);
     if(isCorrectFileFormat) {
       file.value = e;
+      imageSrc.value = URL.createObjectURL(e);
     }else {
       file.value = undefined;
       sysStore.openDialog('請給予正確的圖片');
     }
+    console.log(imageSrc.value);
   }
   // 上傳檔案
   const handleUploadFile = async (): Promise<void> => {
     if(!file.value) {
       return;
     };
-    controller = new AbortController();
-    const formdata = new FormData();
-    formdata.append('file', file.value!, file.value!.name);
+    const fileName = file.value.name;
     try {
+      const { canvas } = cropper.value.getResult();
+      // 因canvas.toBlob本身不是Promise 所以得自己包裝成Promise
+      const blob: Blob | null = await new Promise(resolve => {
+        canvas.toBlob((b: Blob | null) => {
+          resolve(b);
+        })
+      })
+      if(!blob) {
+        sysStore.openDialog('圖片處理失敗，請重試');
+        url.value = '';
+        return;
+      }
+
+      controller = new AbortController();
+      const formdata = new FormData();
+      formdata.append('file', blob, fileName);    
       const res = await apiUploadProductImg(formdata, {
-      onUploadProgress: (progressEvent: { total: any; progress: any; }) => {
-        if (progressEvent.total) {
-          progress.value = Math.ceil(progressEvent.progress! * 100);
-        }
-      },
-      signal: controller.signal
-    })
+        onUploadProgress: (progressEvent: { total: any; progress: any; }) => {
+          if (progressEvent.total) {
+            progress.value = Math.ceil(progressEvent.progress! * 100);
+          }
+        },
+        signal: controller.signal
+      })
       url.value = res.data;
     } catch (error) {
+      sysStore.openDialog('圖片處理失敗，請重試');
       url.value = '';
+      imageSrc.value = null;
     }
   }
+
   // 取消上傳
   const handleCancelUpload = () => {
-    if (controller) {
+    if(controller) {
       controller.abort();
     }
     file.value = undefined;
     url.value = '';
+    imageSrc.value = null;
     nextTick(() => progress.value = 0);
   }
 
@@ -102,4 +135,12 @@
   })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.cropper_wrapper {
+  max-width: 325px;
+  height: auto;
+  width: 100%; 
+  margin: 0 auto;
+  border: 1px solid #ccc;
+}
+</style>
