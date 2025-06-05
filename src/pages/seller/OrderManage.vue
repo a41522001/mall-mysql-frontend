@@ -2,7 +2,7 @@
   <div id="orderManage" class="text-no-wrap">
     <h2 class="mb-5">訂單管理</h2>
     <DataTable :headers="headers" :items="items" item-key="orderNo"
-      :append="append">
+      :append="append" no-data-text="暫無訂單">
       <template v-slot:status="{ value }">
         <span class="status" :class="[statusMap[value as Status].className]">
           {{ statusMap[value as Status].text }}

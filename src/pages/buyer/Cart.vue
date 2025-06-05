@@ -9,7 +9,7 @@
         class="position-absolute top-0 right-0 mx-3" />
       <v-col cols="7" sm="5">
         <v-sheet class="image_container w-100 ps-5">
-          <img class="w-100 h-100" src="" alt="">
+          <img class="w-100 h-100" :src="cart.image" alt="">
         </v-sheet>
       </v-col>
       <v-col cols="5" sm="2">
@@ -23,7 +23,7 @@
       <v-col cols="9" sm="5">
         <div class="flex-sm-1-1 d-flex align-sm-center flex-column flex-sm-row">
           <v-number-input v-model="quantities[cart.productId]" :min="0" label="數量" control-variant="split"
-            :hideInput="false" :inset="false" :hide-details="true" density="compact" max-width="100%"
+            :hideInput="false" :inset="false" hide-details density="compact" max-width="100%"
             @update:model-value="handleCheckStock(cart.productId, quantities[cart.productId])"/>
           <div class="text-sm-end font-weight-bold text-h6 ms-sm-3">$:{{ cart.price * quantities[cart.productId] }}</div>
         </div>
@@ -220,33 +220,5 @@
   max-width: 768px;
   width: 100%;
   margin: auto;
-}
-.image_container {
-  height: 20rem;
-}
-@media (max-width: 1280px) {
-  .image_container {
-    height: 15rem;
-  }
-}
-@media (max-width: 768px) {
-  .image_container {
-    height: 10rem;
-  }
-}
-@media (max-width: 599px) {
-  .image_container {
-    height: 12rem;
-  }
-}
-@media (max-width: 475px) {
-  .image_container {
-    height: 8rem;
-  }
-}
-@media (max-width: 380px) {
-  .image_container {
-    height: 6rem;
-  }
 }
 </style>

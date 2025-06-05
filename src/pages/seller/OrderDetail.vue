@@ -19,10 +19,10 @@
     <!-- 商品資訊 -->
     <div class="mb-5">
       <p class="text-h6 mb-3">購買商品</p>
-      <template v-for="({ productName, price, quantity }) in orderInfo.products">
+      <template v-for="({ productName, price, quantity, image }) in orderInfo.products">
         <v-row>
           <v-col cols="3" sm="2">
-            <v-img :src="Apple" rounded />
+            <v-img :src="image" rounded />
           </v-col>
           <v-col cols="5" sm="3" class="me-auto d-flex flex-column">
             <div class="mb-1">{{ productName }}</div>

@@ -1,7 +1,9 @@
 <template>
-  <v-carousel show-arrows="hover" continuous cycle :height="height">
-    <v-carousel-item v-for="img in imgList"
-      :src="img"
+  <v-carousel v-if="productList.length > 0" show-arrows="hover" continuous cycle>
+    <v-carousel-item v-for="product in productList"
+      :key="product.id"
+      :src="product.image"
+      aspect-ratio="4/3"
       cover
     ></v-carousel-item>
   </v-carousel>
@@ -9,14 +11,16 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import Apple from '@/../public/image/Apple.png'
-import Banana from '@/../public/image/Banana.png'
-import Cherry from '@/../public/image/Cherry.png'
-import Fish from '@/../public/image/Fish.png'
-import Strawberry from '@/../public/image/Strawberry.png'
 import { useDisplay } from 'vuetify';
+import type { Product } from '@/types/interface';
+interface Props {
+  products: Product[];
+}
+const props = defineProps<Props>();
+const productList = computed((): Product[] => {
+  return props.products.slice(0, 5);
+})
 const { mobile, lgAndDown } = useDisplay();
-const imgList = reactive([Apple, Banana, Cherry, Fish, Strawberry]);
 const height = computed(() => lgAndDown.value ? '300' : '600');
 </script>
 

@@ -1,5 +1,4 @@
 <template>
-  {{ phoneDetail }}
   <v-card class="mx-auto" width="100%" max-width="600px">
     <v-card class="mb-6">
       <v-toolbar flat color="primary" dark>
@@ -10,7 +9,7 @@
       <v-row class="align-center">
         <v-col cols="5">
           <v-sheet width="100%" height="100%" class="pa-3">
-            <v-img :src="Apple" width="100%" aspect-ratio="1/1" rounded="sm" />
+            <v-img :src="product.image" width="100%" aspect-ratio="1/1" rounded="sm" />
           </v-sheet>
         </v-col>
         <v-col cols="3">

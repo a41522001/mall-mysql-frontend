@@ -29,6 +29,7 @@ export interface Cart {
   quantity: number;
   name: string;
   price: number;
+  image: string;
 }
 export interface OrderProduct {
   image: string | null;

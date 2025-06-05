@@ -1,6 +1,6 @@
 <template>
   <div class="mb-5">
-    <Carousels />
+    <Carousels :products="products" />
   </div>
   <v-row>
     <v-col v-for="{ id, name, price, quantity, image, sellUserId } in productList" :key="id" cols="12" sm="6" md="4" lg="3" >
@@ -30,7 +30,7 @@
       <v-card-text>
         <v-row>
           <v-col cols="4">
-            <img class="w-100" height="100px" src="" alt="">
+            <img class="w-100" :src="currentProduct.image" alt="">
           </v-col>
           <v-col cols="8">
             <div>商品名稱</div>

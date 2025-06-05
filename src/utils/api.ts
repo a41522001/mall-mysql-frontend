@@ -1,9 +1,9 @@
 import axios, { AxiosError } from 'axios';
 import type { HttpMethod } from '@/types/interface';
-const urlRes = await axios.get(import.meta.env.VITE_CONFIG_PATH);
-const { apiBaseUrl } = urlRes.data;
+// const urlRes = await axios.get(import.meta.env.VITE_CONFIG_PATH);
+// const { apiBaseUrl } = urlRes.data;
 const apiClient = axios.create({
-  baseURL: apiBaseUrl,
+  baseURL: import.meta.env.VITE_CONFIG_PATH,
   // timeout: 5000,
 })
 
