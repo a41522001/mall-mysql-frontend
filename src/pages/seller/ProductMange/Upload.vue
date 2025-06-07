@@ -1,6 +1,6 @@
 <template>
   <v-card class="ma-5 mx-auto">
-    <v-file-upload v-model="file" title="請拖曳或點擊您想上傳的圖片" divider-text="限JPG, PNG檔" browse-text="點擊" 
+    <v-file-upload v-model="file" title="請拖曳或點擊您想上傳的圖片" divider-text="限圖片檔" browse-text="點擊" 
       density="default" clearable @update:modelValue="handleUpdateFile">
       <template v-slot:browse>
         <v-file-input v-show="false" ref="fileInputRef" v-model="file" @update:modelValue="handleUpdateFile" />
