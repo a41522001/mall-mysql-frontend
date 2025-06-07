@@ -42,10 +42,9 @@
   import { Cropper } from 'vue-advanced-cropper'
   import 'vue-advanced-cropper/dist/style.css';
   const router = useRouter();
-  const userStore = useUserStore();
   const sysStore = useSysStore();
   const url = defineModel<string>();
-  const fileCondition = ['jpg', 'png'];
+  const fileCondition = ['jpg', 'png', 'jpeg', 'heic', 'heif', 'webp', 'gif'];
   const fileInputRef = ref();
   const cropper = ref();
   const file = ref<File | undefined>();
@@ -77,7 +76,6 @@
       file.value = undefined;
       sysStore.openDialog('請給予正確的圖片');
     }
-    console.log(imageSrc.value);
   }
   // 上傳檔案
   const handleUploadFile = async (): Promise<void> => {
