@@ -89,10 +89,14 @@
   import { apiSellCancelOrder, apiSellDeliver, apiSellOrderDetail } from '@/utils/apiClient';
   import type { SellOrderDetail, Status } from '@/types/interface';
   import { useSysStore } from '@/stores/sysStore';
+  interface Props {
+    orderId: string;
+  }
   const sysStore = useSysStore();
   const route = useRoute();
   const router = useRouter();
-  const orderId = route.params.orderId;
+  const props = defineProps<Props>();
+  const orderId = props.orderId;
   const orderInfo: SellOrderDetail = reactive({
     total: 0,
     receiverName: '',

@@ -91,7 +91,7 @@
   }
   // 設置購物車資訊API
   const getCartList = async () => {
-    cartStore.getCartList(userInfo.id);
+    cartStore.getCartList();
   }
   
   onMounted(async () => {

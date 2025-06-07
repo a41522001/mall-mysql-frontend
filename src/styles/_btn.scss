@@ -1,0 +1,9 @@
+@import './variables';
+
+.error_btn {
+  background-color: $error;
+  color: #fff;
+  &:hover {
+    background-color: $error-hover;
+  }
+}

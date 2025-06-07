@@ -16,7 +16,7 @@ export interface Product {
   quantity: number;
   image: string;
   sellUserId: string;
-  isActive: 0 | 1;
+  isActive?: 0 | 1;
 }
 export interface UserInfo {
   id: string;
@@ -32,7 +32,7 @@ export interface Cart {
   image: string;
 }
 export interface OrderProduct {
-  image: string | null;
+  image: string;
   perPrice: number;
   quantity: number;
   productID: string;

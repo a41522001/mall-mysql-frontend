@@ -82,16 +82,14 @@
   import addressJSON from '@/../public/address.json';
   import { apiCheckout, apiGetSingleOrderDetail } from '@/utils/apiClient';
   import { VForm } from 'vuetify/components';
+  interface Props {
+    orderId: string;
+  }
   defineOptions({
     inheritAttrs: false
   })
+  const props = defineProps<Props>();
   const addressData = addressJSON as Record<string, string[]>;
-  const { name } = useDisplay()
-  const userStore = useUserStore();
-  const cartStore = useCartStore();
-  const sysStore = useSysStore();
-  const router: Router = useRouter();
-  const route = useRoute();
   const userInfo = inject<UserInfo>('userInfo')!;
   const { id: userId } = userInfo;
   const formReceiver = ref<InstanceType<typeof VForm> | null>(null);
@@ -156,10 +154,9 @@
   })
 
   const getOrderDetail = async () => {
-    const orderId = route.params.orderId;
     const data = {
       userId,
-      orderId
+      orderId: props.orderId
     }
     const res = await apiGetSingleOrderDetail(data);
     Object.assign(orderDetail, res.data);

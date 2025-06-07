@@ -34,7 +34,7 @@
               <div class="order_no">#{{ orderId }}</div>
               <div class="order_date">下單日期：{{ renderCreatedDate(createdDate) }}</div>
             </div>
-            <v-chip :color="statusMap[status].color" class="flex-shrink-0">{{ statusMap[status].text }}</v-chip>
+            <v-chip :color="statusMap[status]?.color" class="flex-shrink-0">{{ statusMap[status]?.text }}</v-chip>
           </div>
           <v-divider class="my-4" />
           <div>
@@ -54,7 +54,9 @@
               <span class="order_amount">NT$ {{ totalPrice }}</span>
             </div>
             <div class="d-flex ga-3">
-              <v-btn v-if="status !== 'cancel'" @click="handleCancelOrder(orderId)">取消訂單</v-btn>
+              <v-btn v-if="status !== 'cancel'" @click="handleCancelOrder(orderId)" class="error_btn">
+                取消訂單
+              </v-btn>
             </div>
           </div>
         </v-card-text>
@@ -104,6 +106,18 @@
     cancel: {
       text: '已取消',
       color: 'red'
+    },
+    deliver: {
+      text: '運送中',
+      color: 'info'
+    },
+    delivered: {
+      text: '已送達',
+      color: 'amber'
+    },
+    finish: {
+      text: '已完成',
+      color: 'grey'
     }
   }
   const orderID = shallowRef<string>('');

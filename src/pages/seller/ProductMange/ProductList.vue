@@ -17,7 +17,7 @@
                 </div>
                 <div class="d-flex ga-3">
                   <v-btn class="flex-grow-1">編輯</v-btn>
-                  <v-btn @click="handleIsActive(id, isActive)" class="flex-grow-1">{{ renderIsActiveText(isActive) }}</v-btn>
+                  <v-btn @click="handleIsActive(id, isActive!)" class="flex-grow-1">{{ renderIsActiveText(isActive!) }}</v-btn>
                 </div>
               </div>
             </div>
@@ -34,7 +34,6 @@
 </template>
 
 <script setup lang="ts">
-  import Apple from '@/../public/image/Apple.png';
   import type { SellProduct } from '@/types/interface';
   import { formatNumberWithCommas } from '@/utils/index';
   import { useSysStore } from '@/stores/sysStore';

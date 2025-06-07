@@ -5,7 +5,7 @@
  */
 
 // Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw  } from 'vue-router'
 import { defineAsyncComponent } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { components } from 'vuetify/dist/vuetify.js';
@@ -13,7 +13,7 @@ import Login from '@/pages/default/Login.vue';
 import BuyerLayout from '@/layouts/BuyerLayout.vue';
 import SellerLayout from '@/layouts/sellerLayout.vue';
 import Signup from '@/pages/default/Signup.vue';
-const routes = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
@@ -80,7 +80,8 @@ const routes = [
       {
         path: 'orderDetail/:orderId',
         name: 'orderDetail',
-        component: defineAsyncComponent(() => import('@/pages/seller/OrderDetail.vue'))
+        component: defineAsyncComponent(() => import('@/pages/seller/OrderDetail.vue')),
+        props: true
       }
     ]
   }

@@ -174,13 +174,10 @@
     try {
       const res = await apiAddOrder(data);
       if(res.data) {
-        await cartStore.getCartList(userId);
+        await cartStore.getCartList();
         init();
         router.push({ 
-          name: 'checkout', 
-          params: { 
-            orderId: res.data
-          } 
+          path: `checkout/${res.data}`
         });
       }
     } catch (error: any) {

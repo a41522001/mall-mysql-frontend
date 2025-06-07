@@ -9,19 +9,13 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     Carousels: typeof import('./components/common/Carousels.vue')['default']
-    Cart: typeof import('./pages/buyer/Cart.vue')['default']
     ConfirmDialog: typeof import('./components/dialog/ConfirmDialog.vue')['default']
     DataTable: typeof import('./components/common/DataTable.vue')['default']
-    HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Loading: typeof import('./components/common/Loading.vue')['default']
-    Logout: typeof import('./components/dialog/LogoutDialog.vue')['default']
     LogoutDialog: typeof import('./components/dialog/LogoutDialog.vue')['default']
     MsgDialog: typeof import('./components/dialog/MsgDialog.vue')['default']
     Pagination: typeof import('./components/common/Pagination.vue')['default']
-    Products: typeof import('./components/common/Products.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SignupDialog: typeof import('./pages/deafult/Signup.vue')['default']
-    Upload: typeof import('./pages/seller/ProductMange/Upload.vue')['default']
   }
 }
