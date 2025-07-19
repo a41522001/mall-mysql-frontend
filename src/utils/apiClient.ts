@@ -104,7 +104,7 @@ export const apiAddProduct = async (
   }
 };
 // 編輯商品
-export const apiModifyProduct = async (data) => {
+export const apiModifyProduct = async (data: any) => {
   try {
     const res = await Response.SendResponse<ResponseType<string>>(
       "sell/product",
