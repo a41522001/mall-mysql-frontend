@@ -7,3 +7,13 @@
     background-color: $error-hover;
   }
 }
+.confirm-btn.v-btn {
+  background-color: #1976D2;
+  color: #fff;
+  height: 30px;
+}
+.cancel-btn.v-btn {
+  background-color: #aaaaaa;
+  color: #fff;
+  height: 30px;
+}
