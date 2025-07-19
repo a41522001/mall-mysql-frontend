@@ -1,4 +1,4 @@
-import type { OrderDetail, Period } from '@/types/interface'
+import type { OrderDetail, Period } from "@/types/interface";
 interface CartList {
   productID: string;
   quantity: number;
@@ -6,7 +6,7 @@ interface CartList {
 }
 export interface RequestLogin {
   email: string;
-  password:string;
+  password: string;
 }
 export interface RequestSignup extends RequestLogin {
   name: string;
@@ -36,7 +36,6 @@ export interface RequestCheckout extends OrderDetail {
   receiverName: string;
 }
 export interface RequestAddProduct {
-  userId: string;
   productName: string;
   price: number;
   quantity: number;
@@ -47,10 +46,9 @@ export interface RequestChangeProductIsActive {
   isActive: 0 | 1;
 }
 export interface RequestChartData {
-  userId: string,
-  period: Period
+  period: Period;
 }
 export interface RequestSellDeliver {
   orderId: string;
 }
-export interface RequestSellCancelOrder extends RequestSellDeliver {};
+export interface RequestSellCancelOrder extends RequestSellDeliver {}

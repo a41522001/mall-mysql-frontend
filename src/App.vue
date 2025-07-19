@@ -15,6 +15,6 @@
 </template>
 
 <script lang="ts" setup>
-  import { useSysStore } from '@/stores/sysStore';
-  const sysStore = useSysStore();
+import { useSysStore } from "@/stores/sysStore";
+const sysStore = useSysStore();
 </script>
