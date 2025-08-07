@@ -27,6 +27,7 @@ import type {
   RequestChartData,
   RequestSellDeliver,
   RequestSellCancelOrder,
+  RequestResetPwd,
 } from "@/types/request";
 import { Response } from "./res";
 // 註冊
@@ -68,6 +69,21 @@ export const apiGetUserInfo = async (): Promise<ResponseUserInfo> => {
       {},
       undefined,
       true
+    );
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+// 重設密碼
+export const apiResetPwd = async (
+  data: RequestResetPwd
+): Promise<ResponseType<string>> => {
+  try {
+    const res = await Response.SendResponse<ResponseType<string>>(
+      "auth/resetPassword",
+      "post",
+      data
     );
     return res;
   } catch (error) {

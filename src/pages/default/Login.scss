@@ -1,6 +1,7 @@
 @import '@/styles/variables.scss'; 
 #login {
   width: 450px;
+  position: relative;
 }
 .login-text {
   color: $primary_text;
@@ -8,10 +9,13 @@
 .login-input-container {
   margin-bottom: 1.25rem;
 }
-.login-checkbox {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.test-btn {
+  position: absolute;
+  top: 0;
+  right: 32px;
+  z-index: 2;
+  transform: translateY(-50%);
+  color: #2563eb;
 }
 @media (max-width: 600px) {
   #login {

@@ -11,6 +11,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <Snack />
   </v-app>
 </template>
 

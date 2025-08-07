@@ -1,7 +1,8 @@
+import { resolve } from "chart.js/helpers";
+
 export const isDataEmpty = (...args: any) => {
   console.log(args);
-  
-}
+};
 
 /**
  * 將數字或數字字串格式化為帶有千分位逗號的字串。
@@ -15,16 +16,16 @@ export const isDataEmpty = (...args: any) => {
 export const formatNumberWithCommas = (value: string | number): string => {
   // 處理 null、undefined 或空字串的情況
   if (value === null || value === undefined) {
-    return ''; // 或者可以回傳 '0' 或其他預設值
+    return ""; // 或者可以回傳 '0' 或其他預設值
   }
 
   const stringValue = String(value).trim();
-  if (stringValue === '') {
-    return ''; // 或者可以回傳 '0'
+  if (stringValue === "") {
+    return ""; // 或者可以回傳 '0'
   }
 
   // 移除字串中可能已存在的逗號，以便正確轉換為數字
-  const cleanedStringValue = stringValue.replace(/,/g, '');
+  const cleanedStringValue = stringValue.replace(/,/g, "");
 
   // 嘗試將清理後的字串轉換為數字
   const numberValue = parseFloat(cleanedStringValue);
@@ -38,5 +39,8 @@ export const formatNumberWithCommas = (value: string | number): string => {
 
   // 使用 toLocaleString() 方法來進行千分位格式化
   // 'en-US' 這個區域設定會使用逗號作為千分位分隔符，句號作為小數點
-  return numberValue.toLocaleString('en-US');
-}
+  return numberValue.toLocaleString("en-US");
+};
+// 複製文字
+export const copy = async (text: string): Promise<void> =>
+  navigator.clipboard.writeText(text);
