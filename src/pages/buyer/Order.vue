@@ -90,7 +90,7 @@
             </div>
             <div class="d-flex ga-3">
               <v-btn
-                v-if="status !== 'cancel'"
+                v-if="status !== 'cancel' && status !== 'finish'"
                 @click="handleCancelOrder(orderId)"
                 class="error_btn"
               >

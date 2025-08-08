@@ -11,7 +11,7 @@ export interface RequestLogin {
 export interface RequestSignup extends RequestLogin {
   name: string;
 }
-
+export interface RequestResetPwd extends RequestSignup {}
 export interface RequestProduct {
   productId: string;
   quantity: number;
